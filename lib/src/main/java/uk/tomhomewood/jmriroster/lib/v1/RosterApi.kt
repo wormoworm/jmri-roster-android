@@ -14,9 +14,9 @@ import java.io.IOException
 const val IMAGE_URL_FORMAT ="%sv1/locomotive/%s/image/%d"
 
 interface RosterApiInterface{
-    suspend fun getRoster(): ResultWrapper<RosterResponse>
+    suspend fun getRoster(): Result<RosterResponse>
 
-    suspend fun getRosterEntry(id: String): ResultWrapper<RosterEntryResponse>
+    suspend fun getRosterEntry(id: String): Result<RosterEntryResponse>
 
     fun loadRosterEntryImage(id: String, size: Int, imageView: ImageView)
 }
@@ -30,11 +30,11 @@ class RosterApi(private val baseUrl: String, private val dispatcher: CoroutineDi
         .build()
         .create(Roster::class.java)
 
-    override suspend fun getRoster(): ResultWrapper<RosterResponse> {
+    override suspend fun getRoster(): Result<RosterResponse> {
         return safeApiCall(dispatcher) { roster.getRoster() }
     }
 
-    override suspend fun getRosterEntry(id: String): ResultWrapper<RosterEntryResponse> {
+    override suspend fun getRosterEntry(id: String): Result<RosterEntryResponse> {
         return safeApiCall(dispatcher) { roster.getRosterEntry(id) }
     }
 
@@ -42,25 +42,25 @@ class RosterApi(private val baseUrl: String, private val dispatcher: CoroutineDi
         imageView.load(IMAGE_URL_FORMAT.format(baseUrl, id, size))
     }
 
-    private suspend fun <T> safeApiCall(dispatcher: CoroutineDispatcher, apiCall: suspend () -> T): ResultWrapper<T> {
+    private suspend fun <T> safeApiCall(dispatcher: CoroutineDispatcher, apiCall: suspend () -> T): Result<T> {
         return withContext(dispatcher) {
             try {
-                ResultWrapper.Success(apiCall.invoke())
+                Result.Success(apiCall.invoke())
             } catch (throwable: Throwable) {
                 when (throwable) {
-                    is IOException -> ResultWrapper.Error(
+                    is IOException -> Result.Error(
                         message = throwable.message
                     )
                     is HttpException -> {
                         val code = throwable.code()
                         val errorMessage = convertErrorBody(throwable)
-                        ResultWrapper.Error(
+                        Result.Error(
                             code,
                             errorMessage
                         )
                     }
                     else -> {
-                        ResultWrapper.Error(
+                        Result.Error(
                             code = -1,
                             message = throwable.message
                         )
@@ -75,7 +75,7 @@ class RosterApi(private val baseUrl: String, private val dispatcher: CoroutineDi
     }
 }
 
-sealed class ResultWrapper<out T> {
-    data class Success<out T>(val value: T): ResultWrapper<T>()
-    data class Error(val code: Int? = null, val message: String? = null): ResultWrapper<Nothing>()
+sealed class Result<out T> {
+    data class Success<out T>(val value: T): Result<T>()
+    data class Error(val code: Int? = null, val message: String? = null): Result<Nothing>()
 }

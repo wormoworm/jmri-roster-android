@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import uk.tomhomewood.jmriroster.lib.v1.ResultWrapper
+import uk.tomhomewood.jmriroster.lib.v1.Result
 import uk.tomhomewood.jmriroster.lib.v1.RosterApi
 import uk.tomhomewood.jmriroster.lib.v1.RosterEntry
 
@@ -25,19 +25,15 @@ class MainActivity : AppCompatActivity() {
         roster.loadRosterEntryImage("66957", 900, findViewById(R.id.image))
 
         GlobalScope.launch {
-            when (val response = roster.getRoster()){
-                is ResultWrapper.Error -> handleError(response)
-                is ResultWrapper.Success -> handleRosterEntries(response.value.rosterEntries)
+            when (val response = roster.getRosterEntry("66789a")){
+                is Result.Success -> {
+                    Log.d(TAG, "Locomotive name: "+response.value.rosterEntry.name)
+                }
+                is Result.Error -> {
+                    Log.e(TAG, "Error: "+response.message+", code: "+response.code)
+                }
             }
         }
-    }
-
-    private fun handleError(error: ResultWrapper.Error){
-        Log.e(TAG, "Error, message: %s, code: %d".format(error.message, error.code ?: -1))
-    }
-
-    private fun handleRosterEntry(rosterEntry: RosterEntry){
-        Log.d(TAG, "Locomotive F2 name: "+ rosterEntry.functions[2].name)
     }
 
     private fun handleRosterEntries(rosterEntries: List<RosterEntry>){

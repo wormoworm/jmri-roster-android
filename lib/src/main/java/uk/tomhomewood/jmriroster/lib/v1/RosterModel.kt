@@ -9,7 +9,7 @@ data class RosterResponse(
 
 data class RosterEntryResponse(
     @SerializedName("locomotive")
-    val rosterEntries: RosterEntry
+    val rosterEntry: RosterEntry
 )
 
 data class RosterEntry(
