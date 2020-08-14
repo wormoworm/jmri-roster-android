@@ -73,8 +73,8 @@ class ApiResponseTests {
         // Extract the values we will test against from the master locomotive JsonObject.
         val locomotive123 = rosterEntry123.get("locomotive").asJsonObject
         val locomotive123Functions = locomotive123.get("functions").asJsonArray
-        val locomotive123FunctionF0 = locomotive123Functions.get(0).asJsonObject
-        val locomotive123FunctionF1 = locomotive123Functions.get(1).asJsonObject
+//        val locomotive123FunctionF0 = locomotive123Functions.get(0).asJsonObject
+//        val locomotive123FunctionF1 = locomotive123Functions.get(1).asJsonObject
 
         val rosterEntryResponse = runBlocking {
             rosterApi.getRosterEntry("123")
@@ -90,9 +90,12 @@ class ApiResponseTests {
         assertEquals(rosterEntry.owner, locomotive123.get("owner").asString)
         assertEquals(rosterEntry.comment, locomotive123.get("comment").asString)
         assertEquals(rosterEntry.functions.size, locomotive123Functions.size())
-        assertEquals(rosterEntry.functions[0].number, locomotive123FunctionF0.get("number").asInt)
-        assertEquals(rosterEntry.functions[0].name, locomotive123FunctionF0.get("name").asString)
-        assertEquals(rosterEntry.functions[0].lockable, locomotive123FunctionF0.get("lockable").asBoolean)
+        for (i in 0 until locomotive123Functions.size()){
+            val function = locomotive123Functions.get(i).asJsonObject
+            assertEquals(rosterEntry.functions[i].number, function.get("number").asInt)
+            assertEquals(rosterEntry.functions[i].name, function.get("name").asString)
+            assertEquals(rosterEntry.functions[i].lockable, function.get("lockable").asBoolean)
+        }
     }
 
     @Test
