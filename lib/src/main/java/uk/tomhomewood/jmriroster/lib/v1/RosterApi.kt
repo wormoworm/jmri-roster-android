@@ -11,6 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
+const val ERROR_CODE_NOT_SET = -1
 const val IMAGE_URL_FORMAT ="%sv1/locomotive/%s/image/%d"
 
 interface RosterApiInterface{
@@ -24,7 +25,7 @@ interface RosterApiInterface{
 class RosterApi(private val baseUrl: String, private val dispatcher: CoroutineDispatcher = Dispatchers.IO):
     RosterApiInterface {
 
-    var roster: Roster = Retrofit.Builder()
+    private var roster: Roster = Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
         .build()
@@ -41,38 +42,24 @@ class RosterApi(private val baseUrl: String, private val dispatcher: CoroutineDi
     override fun loadRosterEntryImage(id: String, size: Int, imageView: ImageView){
         imageView.load(IMAGE_URL_FORMAT.format(baseUrl, id, size))
     }
+}
 
-    private suspend fun <T> safeApiCall(dispatcher: CoroutineDispatcher, apiCall: suspend () -> T): Result<T> {
-        return withContext(dispatcher) {
-            try {
-                Result.Success(apiCall.invoke())
-            } catch (throwable: Throwable) {
-                when (throwable) {
-                    is IOException -> Result.Error(
-                        message = throwable.message
-                    )
-                    is HttpException -> {
-                        val code = throwable.code()
-                        val errorMessage = convertErrorBody(throwable)
-                        Result.Error(
-                            code,
-                            errorMessage
-                        )
-                    }
-                    else -> {
-                        Result.Error(
-                            code = -1,
-                            message = throwable.message
-                        )
-                    }
-                }
+suspend fun <T> safeApiCall(dispatcher: CoroutineDispatcher, apiCall: suspend () -> T): Result<T> {
+    return withContext(dispatcher) {
+        try {
+            Result.Success(apiCall.invoke())
+        } catch (throwable: Throwable) {
+            when (throwable) {
+                is IOException -> Result.Error(code = ERROR_CODE_NOT_SET, message = throwable.message)
+                is HttpException -> Result.Error(throwable.code(), getErrorMessageFromHttpException(throwable))
+                else -> Result.Error(code = ERROR_CODE_NOT_SET, message = throwable.message)
             }
         }
     }
+}
 
-    private fun convertErrorBody(throwable: HttpException): String? {
-        return throwable.response()?.errorBody()?.string()
-    }
+private fun getErrorMessageFromHttpException(throwable: HttpException): String? {
+    return throwable.response()?.errorBody()?.string()
 }
 
 sealed class Result<out T> {

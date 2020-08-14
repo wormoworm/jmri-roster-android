@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         roster.loadRosterEntryImage("66957", 900, findViewById(R.id.image))
 
         GlobalScope.launch {
-            when (val response = roster.getRosterEntry("66789a")){
+            when (val response = roster.getRosterEntry("66789")){
                 is Result.Success -> {
                     Log.d(TAG, "Locomotive name: "+response.value.rosterEntry.name)
                 }
