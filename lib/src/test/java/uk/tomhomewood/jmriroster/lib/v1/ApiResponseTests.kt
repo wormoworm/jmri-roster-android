@@ -21,7 +21,6 @@ class ApiResponseTests {
     private var mockWebServer = MockWebServer()
     private lateinit var rosterApi: RosterApi
     private lateinit var rosterEntry123: JsonObject
-    private lateinit var locomotive123: JsonObject
 
     private var serverReturn500: Boolean = false
 
@@ -62,7 +61,6 @@ class ApiResponseTests {
         rosterApi = RosterApi(mockWebServer.url("/").toString())
 
         rosterEntry123 = Gson().fromJson("{\"locomotive\": {\"id\": \"123\",\"dccAddress\": \"123\",\"fileName\": \"123.xml\",\"number\": \"123\",\"name\": \"One two three\",\"manufacturer\": \"Company\",\"model\": \"Model one\",\"owner\": \"John Smith\",\"comment\": \"Line one\\nLine two.\",\"imageFilePath\": \"roster\\/123.jpg\",\"functions\": [{\"number\": 0,\"name\": \"Light\",\"lockable\": true}, {\"number\": 1,\"name\": \"Bell\",\"lockable\": false}]},\"created\": 1589649951,\"modified\": 1589649941,\"loadTime\": 7,\"metadata\": []}", JsonObject::class.java)
-        locomotive123 = rosterEntry123.get("locomotive").asJsonObject
     }
 
     @After
@@ -72,6 +70,12 @@ class ApiResponseTests {
 
     @Test
     fun testRosterEntry() {
+        // Extract the values we will test against from the master locomotive JsonObject.
+        val locomotive123 = rosterEntry123.get("locomotive").asJsonObject
+        val locomotive123Functions = locomotive123.get("functions").asJsonArray
+        val locomotive123FunctionF0 = locomotive123Functions.get(0).asJsonObject
+        val locomotive123FunctionF1 = locomotive123Functions.get(1).asJsonObject
+
         val rosterEntryResponse = runBlocking {
             rosterApi.getRosterEntry("123")
         }
@@ -85,6 +89,10 @@ class ApiResponseTests {
         assertEquals(rosterEntry.model, locomotive123.get("model").asString)
         assertEquals(rosterEntry.owner, locomotive123.get("owner").asString)
         assertEquals(rosterEntry.comment, locomotive123.get("comment").asString)
+        assertEquals(rosterEntry.functions.size, locomotive123Functions.size())
+        assertEquals(rosterEntry.functions[0].number, locomotive123FunctionF0.get("number").asInt)
+        assertEquals(rosterEntry.functions[0].name, locomotive123FunctionF0.get("name").asString)
+        assertEquals(rosterEntry.functions[0].lockable, locomotive123FunctionF0.get("lockable").asBoolean)
     }
 
     @Test
