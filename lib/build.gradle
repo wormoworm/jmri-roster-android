@@ -1,6 +1,15 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'maven-publish'
+
+def getVersionCode = { ->
+    return 10
+}
+
+def getVersionName = { ->
+    return "0.1.0"
+}
 
 android {
     compileSdkVersion 30
@@ -14,8 +23,8 @@ android {
     defaultConfig {
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode getVersionCode()
+        versionName getVersionName()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -34,6 +43,23 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
         jvmTarget = "1.8"
     }
 }
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+                // You can then customize attributes of the publication as shown below.
+                groupId = 'uk.tomhomewood'
+                artifactId = 'jmri-roster'
+                version = getVersionName()
+            }
+        }
+    }
+}
+
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
