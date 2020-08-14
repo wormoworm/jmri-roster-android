@@ -27,6 +27,8 @@ data class RosterEntry(
     val model: String,
     @SerializedName("owner")
     val owner: String,
+    @SerializedName("comment")
+    val comment: String,
     @SerializedName("functions")
     val functions: List<Function>
 )

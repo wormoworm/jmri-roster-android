@@ -84,6 +84,7 @@ class ApiResponseTests {
         assertEquals(rosterEntry.manufacturer, locomotive123.get("manufacturer").asString)
         assertEquals(rosterEntry.model, locomotive123.get("model").asString)
         assertEquals(rosterEntry.owner, locomotive123.get("owner").asString)
+        assertEquals(rosterEntry.comment, locomotive123.get("comment").asString)
     }
 
     @Test
