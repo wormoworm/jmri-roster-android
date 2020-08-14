@@ -73,8 +73,6 @@ class ApiResponseTests {
         // Extract the values we will test against from the master locomotive JsonObject.
         val locomotive123 = rosterEntry123.get("locomotive").asJsonObject
         val locomotive123Functions = locomotive123.get("functions").asJsonArray
-//        val locomotive123FunctionF0 = locomotive123Functions.get(0).asJsonObject
-//        val locomotive123FunctionF1 = locomotive123Functions.get(1).asJsonObject
 
         val rosterEntryResponse = runBlocking {
             rosterApi.getRosterEntry("123")
@@ -101,7 +99,7 @@ class ApiResponseTests {
     @Test
     fun testRosterEntryNotFound() {
         val rosterEntryResponse = runBlocking {
-            rosterApi.getRosterEntry("12345")
+            rosterApi.getRosterEntry("000")
         }
         assert(rosterEntryResponse is Result.Error)
         assert((rosterEntryResponse as Result.Error).code==HttpURLConnection.HTTP_NOT_FOUND)
