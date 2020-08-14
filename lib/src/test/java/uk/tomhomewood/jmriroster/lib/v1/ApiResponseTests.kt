@@ -1,8 +1,6 @@
 package uk.tomhomewood.jmriroster.lib.v1
 
-import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.Dispatcher
@@ -10,7 +8,6 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.junit.After
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -68,6 +65,9 @@ class ApiResponseTests {
         mockWebServer.shutdown()
     }
 
+    /**
+     * Tests the normal case: The requested roster entry exists and the API responded correctly.
+     */
     @Test
     fun testRosterEntry() {
         // Extract the values we will test against from the master locomotive JsonObject.
@@ -96,6 +96,9 @@ class ApiResponseTests {
         }
     }
 
+    /**
+     * Tests the "no roster entry found" case.
+     */
     @Test
     fun testRosterEntryNotFound() {
         val rosterEntryResponse = runBlocking {
@@ -105,6 +108,9 @@ class ApiResponseTests {
         assert((rosterEntryResponse as Result.Error).code==HttpURLConnection.HTTP_NOT_FOUND)
     }
 
+    /**
+     * Tests the "server internal error" case.
+     */
     @Test
     fun testRosterEntryInternalServerError() {
         serverReturn500 = true
