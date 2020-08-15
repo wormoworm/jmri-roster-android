@@ -12,7 +12,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
 const val ERROR_CODE_NOT_SET = -1
-const val IMAGE_URL_FORMAT ="%sv1/locomotive/%s/image/%d"
 
 interface RosterApiInterface{
     suspend fun getRoster(): Result<RosterResponse>
@@ -40,7 +39,15 @@ class RosterApi(private val baseUrl: String, private val dispatcher: CoroutineDi
     }
 
     override fun loadRosterEntryImage(id: String, size: Int, imageView: ImageView){
-        imageView.load(IMAGE_URL_FORMAT.format(baseUrl, id, size))
+        RosterEntryImageLoader(baseUrl).loadRosterEntryImage(id, size, imageView)
+    }
+}
+
+class RosterEntryImageLoader(private val baseUrl: String){
+    val imageUrlFormat ="%sv1/locomotive/%s/image/%d"
+
+    fun loadRosterEntryImage(id: String, size: Int, imageView: ImageView){
+        imageView.load(imageUrlFormat.format(baseUrl, id, size))
     }
 }
 
