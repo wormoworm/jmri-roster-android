@@ -20,11 +20,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        launchViewRosterEntryForResult("66957", 1)
     }
 
-    private fun handleRosterEntries(rosterEntries: List<RosterEntry>){
-        for (rosterEntry in rosterEntries) {
-            Log.d(TAG, "Locomotive ID: "+rosterEntry.id)
-        }
-    }
+
 }

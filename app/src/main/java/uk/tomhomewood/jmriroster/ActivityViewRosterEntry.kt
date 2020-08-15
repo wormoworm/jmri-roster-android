@@ -1,5 +1,8 @@
 package uk.tomhomewood.jmriroster
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -7,25 +10,33 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import uk.tomhomewood.jmriroster.lib.v1.*
 
 class ActivityViewRosterEntry : AppCompatActivity() {
 
+    companion object {
+        const val EXTRA_ROSTER_ID: String = "rosterId"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_roster_entry)
 
-        val rosterId = "66789"  //TODO Fetch from extras
-
-        val model: RosterEntryViewModel by viewModels {
-            RosterEntryViewModelFactory(rosterId)
+        val rosterId = getRosterIdFromIntent()
+        if (rosterId!=null){
+            val model: RosterEntryViewModel by viewModels {
+                RosterEntryViewModelFactory(rosterId)
+            }
+            model.getRosterEntry().observe(this, Observer<RosterEntry>{
+                    rosterEntry -> bindRosterEntry(rosterEntry)
+            })
+            findViewById<ImageView>(R.id.image).loadRosterEntryImage(BuildConfig.ROSTER_API_URL, rosterId, 1000)
         }
-        model.getRosterEntry().observe(this, Observer<RosterEntry>{
-            rosterEntry -> bindRosterEntry(rosterEntry)
-        })
-        findViewById<ImageView>(R.id.image).loadRosterEntryImage(BuildConfig.ROSTER_API_URL, rosterId, 1000)
+    }
+
+    private fun getRosterIdFromIntent(): String? {
+        return intent.getStringExtra(EXTRA_ROSTER_ID)
     }
 
     private fun bindRosterEntry(rosterEntry: RosterEntry) {
@@ -33,6 +44,10 @@ class ActivityViewRosterEntry : AppCompatActivity() {
         findViewById<TextView>(R.id.name).text = rosterEntry.name
         findViewById<TextView>(R.id.address).text = rosterEntry.dccAddress
     }
+}
+
+fun AppCompatActivity.launchViewRosterEntryForResult(rosterId: String, launchCode: Int) {
+    this.startActivityForResult(Intent(this, ActivityViewRosterEntry::class.java).putExtra(ActivityViewRosterEntry.EXTRA_ROSTER_ID, rosterId), launchCode)
 }
 
 class RosterEntryViewModelFactory(private val rosterId: String) : ViewModelProvider.Factory {
