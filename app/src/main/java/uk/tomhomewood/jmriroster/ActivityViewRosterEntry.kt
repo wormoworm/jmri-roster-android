@@ -2,16 +2,14 @@ package uk.tomhomewood.jmriroster
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import uk.tomhomewood.jmriroster.lib.v1.Result
-import uk.tomhomewood.jmriroster.lib.v1.Roster
-import uk.tomhomewood.jmriroster.lib.v1.RosterApi
-import uk.tomhomewood.jmriroster.lib.v1.RosterEntry
+import uk.tomhomewood.jmriroster.lib.v1.*
 
 class ActivityViewRosterEntry : AppCompatActivity() {
 
@@ -19,7 +17,7 @@ class ActivityViewRosterEntry : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_roster_entry)
 
-        val rosterId = "30799"  //TODO Fetch from extras
+        val rosterId = "66789"  //TODO Fetch from extras
 
         val model: RosterEntryViewModel by viewModels {
             RosterEntryViewModelFactory(rosterId)
@@ -27,6 +25,7 @@ class ActivityViewRosterEntry : AppCompatActivity() {
         model.getRosterEntry().observe(this, Observer<RosterEntry>{
             rosterEntry -> findViewById<TextView>(R.id.roster_id).text = rosterEntry.name
         })
+        findViewById<ImageView>(R.id.image).loadRosterEntryImage(BuildConfig.ROSTER_API_URL, rosterId, 1000)
     }
 }
 

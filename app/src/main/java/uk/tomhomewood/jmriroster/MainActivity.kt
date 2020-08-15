@@ -20,20 +20,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val roster = RosterApi(BASE_URL)
-        roster.loadRosterEntryImage("66957", 900, findViewById(R.id.image))
-
-        GlobalScope.launch {
-            when (val response = roster.getRosterEntry("66789")){
-                is Result.Success -> {
-                    Log.d(TAG, "Locomotive name: "+response.value.rosterEntry.name)
-                }
-                is Result.Error -> {
-                    Log.e(TAG, "Error: "+response.message+", code: "+response.code)
-                }
-            }
-        }
     }
 
     private fun handleRosterEntries(rosterEntries: List<RosterEntry>){

@@ -1,5 +1,6 @@
 package uk.tomhomewood.jmriroster.lib.v1
 
+import android.util.Log
 import android.widget.ImageView
 import coil.api.load
 import com.google.gson.GsonBuilder
@@ -21,8 +22,7 @@ interface RosterApiInterface{
     fun loadRosterEntryImage(id: String, size: Int, imageView: ImageView)
 }
 
-class RosterApi(private val baseUrl: String, private val dispatcher: CoroutineDispatcher = Dispatchers.IO):
-    RosterApiInterface {
+class RosterApi(private val baseUrl: String, private val dispatcher: CoroutineDispatcher = Dispatchers.IO): RosterApiInterface {
 
     private var roster: Roster = Retrofit.Builder()
         .baseUrl(baseUrl)
@@ -38,17 +38,21 @@ class RosterApi(private val baseUrl: String, private val dispatcher: CoroutineDi
         return safeApiCall(dispatcher) { roster.getRosterEntry(id) }
     }
 
-    override fun loadRosterEntryImage(id: String, size: Int, imageView: ImageView){
+    override fun loadRosterEntryImage(id: String, size: Int, imageView: ImageView) {
         RosterEntryImageLoader(baseUrl).loadRosterEntryImage(id, size, imageView)
     }
 }
 
-class RosterEntryImageLoader(private val baseUrl: String){
-    val imageUrlFormat ="%sv1/locomotive/%s/image/%d"
+class RosterEntryImageLoader(private val baseUrl: String) {
+    private val imageUrlFormat ="%sv1/locomotive/%s/image/%d"
 
-    fun loadRosterEntryImage(id: String, size: Int, imageView: ImageView){
+    fun loadRosterEntryImage(id: String, size: Int, imageView: ImageView) {
         imageView.load(imageUrlFormat.format(baseUrl, id, size))
     }
+}
+
+fun ImageView.loadRosterEntryImage(baseUrl: String, id: String, size: Int) {
+    RosterEntryImageLoader(baseUrl).loadRosterEntryImage(id, size, this)
 }
 
 suspend fun <T> safeApiCall(dispatcher: CoroutineDispatcher, apiCall: suspend () -> T): Result<T> {
