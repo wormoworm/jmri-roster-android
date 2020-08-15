@@ -23,9 +23,15 @@ class ActivityViewRosterEntry : AppCompatActivity() {
             RosterEntryViewModelFactory(rosterId)
         }
         model.getRosterEntry().observe(this, Observer<RosterEntry>{
-            rosterEntry -> findViewById<TextView>(R.id.roster_id).text = rosterEntry.name
+            rosterEntry -> bindRosterEntry(rosterEntry)
         })
         findViewById<ImageView>(R.id.image).loadRosterEntryImage(BuildConfig.ROSTER_API_URL, rosterId, 1000)
+    }
+
+    private fun bindRosterEntry(rosterEntry: RosterEntry) {
+        findViewById<TextView>(R.id.number).text = rosterEntry.number
+        findViewById<TextView>(R.id.name).text = rosterEntry.name
+        findViewById<TextView>(R.id.address).text = rosterEntry.dccAddress
     }
 }
 
