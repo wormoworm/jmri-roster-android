@@ -46,6 +46,9 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation "androidx.activity:activity-ktx:1.1.0"
+    implementation ('com.github.thekhaeng:recycler-margin:1.2.1') {
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+    }
 
     implementation project(":lib")
 

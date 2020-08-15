@@ -13,8 +13,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration
 import kotlinx.coroutines.launch
 import uk.tomhomewood.jmriroster.lib.v1.Result
 import uk.tomhomewood.jmriroster.lib.v1.RosterApi
@@ -31,6 +33,7 @@ class ActivityViewRoster : AppCompatActivity() {
 
         val rosterList = findViewById<RecyclerView>(R.id.roster_list)
         rosterList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        rosterList.addItemDecoration(LayoutMarginDecoration(1, resources.getDimensionPixelSize(R.dimen.margin_vertical_medium)))
 
         val model: RosterViewModel by viewModels()
         rosterList.adapter = RosterAdapter(this, model) {
@@ -106,6 +109,7 @@ class RosterListViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(LayoutIn
     fun bindRosterEntry(rosterEntry: RosterEntry) {
         itemView.findViewById<TextView>(R.id.number).text = rosterEntry.number
         itemView.findViewById<TextView>(R.id.name).text = rosterEntry.name
-        itemView.findViewById<ImageView>(R.id.image).loadRosterEntryImage(BuildConfig.ROSTER_API_URL, rosterEntry.id, imageSize)
+        itemView.findViewById<TextView>(R.id.address).text = rosterEntry.dccAddress
+        itemView.findViewById<ImageView>(R.id.image).loadRosterEntryImage(BuildConfig.ROSTER_API_URL, rosterEntry.id, imageSize, R.mipmap.locomotive_default)
     }
 }
