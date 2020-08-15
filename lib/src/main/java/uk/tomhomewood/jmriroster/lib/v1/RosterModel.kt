@@ -31,7 +31,15 @@ data class RosterEntry(
     val comment: String,
     @SerializedName("functions")
     val functions: List<Function>
-)
+){
+    fun getFunctionCount(): Int{
+        return functions?.size ?: 0
+    }
+
+    fun hasFunctions(): Boolean{
+        return functions != null && functions.isNotEmpty()
+    }
+}
 
 data class Function(
     @SerializedName("number")
