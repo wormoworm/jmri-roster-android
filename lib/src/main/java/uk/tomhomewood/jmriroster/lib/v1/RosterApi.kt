@@ -1,6 +1,5 @@
 package uk.tomhomewood.jmriroster.lib.v1
 
-import android.util.Log
 import android.widget.ImageView
 import coil.api.load
 import com.google.gson.GsonBuilder
