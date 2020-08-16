@@ -50,6 +50,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 
 afterEvaluate {
     println(githubuser)
+    println(githubtoken)
     publishing {
         repositories {
             maven {
