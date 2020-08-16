@@ -26,7 +26,7 @@ jobs:
   publish_lib:
     name: Publish lib artifact
     runs-on: ubuntu-18.04
-    needs: build_test_lib
+    needs: test_lib
     if: "contains(github.event.head_commit.message, '#publish-lib')"
     steps:
       - uses: actions/checkout@v1

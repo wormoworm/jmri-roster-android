@@ -13,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
 const val ERROR_CODE_NOT_SET = -1
+
 const val NO_FALLBACK = -1
 
 interface RosterApiInterface{
