@@ -1,4 +1,4 @@
-name: lib-build-test-publish
+name: ci-cd-lib
 
 on:
   push:
@@ -6,11 +6,9 @@ on:
       - 'master'
 
 jobs:
-  build_test_publish:
-    name: Build, test and publish artifact
+  build_test_lib:
+    name: Build and test lib module
     runs-on: ubuntu-18.04
-    if: "contains(github.event.head_commit.message, 'publish-lib')"
-
     steps:
       - uses: actions/checkout@v1
       - name: set up JDK 1.8
@@ -24,9 +22,12 @@ jobs:
           ORG_GRADLE_PROJECT_githubtoken: ${{ secrets.GH_TOKEN }}
       - name: Run unit tests
         run: bash ./gradlew lib:test --stacktrace
-        env:
-          ORG_GRADLE_PROJECT_githubuser: ${{ secrets.GH_USER }}
-          ORG_GRADLE_PROJECT_githubtoken: ${{ secrets.GH_TOKEN }}
+
+  publish_lib:
+    name: Publish lib artifact
+    needs: build_test_lib
+    if: "contains(github.event.head_commit.message, 'publish-lib')"
+    steps:
       - name: Publish artifact
         run: bash ./gradlew lib:publishReleasePublicationToGithubPackagesRepository -P versionPatch=${{ github.run_number }}
         env:
