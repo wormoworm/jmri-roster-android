@@ -8,8 +8,8 @@ on:
       - 'lib/**'
 
 jobs:
-  build_test_lib:
-    name: Build and test lib module
+  test_lib:
+    name: Test lib module
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
@@ -17,11 +17,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Build
-        run: bash ./gradlew lib:build -P versionPatch=${{ github.run_number }}
-        env:
-          ORG_GRADLE_PROJECT_githubuser: ${{ secrets.GH_USER }}
-          ORG_GRADLE_PROJECT_githubtoken: ${{ secrets.GH_TOKEN }}
       - name: Run unit tests
         run: bash ./gradlew lib:test --stacktrace
         env:
