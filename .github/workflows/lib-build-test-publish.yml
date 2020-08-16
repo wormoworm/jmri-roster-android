@@ -20,3 +20,8 @@ jobs:
         run: bash ./gradlew lib:build -P versionPatch=${{ github.run_id }}
       - name: Run unit tests
         run: bash ./gradlew lib:test --stacktrace
+      - name: Publish artifact
+        run: bash ./gradlew lib:publishReleasePublicationToGithubPackagesRepository
+        env:
+          GITHUB_USER: ${{ secrets.GH_USER }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
