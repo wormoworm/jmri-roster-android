@@ -1,4 +1,4 @@
-name: ci-cd-lib
+name: cicd-lib
 
 on:
   push:
