@@ -22,6 +22,9 @@ jobs:
           ORG_GRADLE_PROJECT_githubtoken: ${{ secrets.GH_TOKEN }}
       - name: Run unit tests
         run: bash ./gradlew lib:test --stacktrace
+        env:
+          ORG_GRADLE_PROJECT_githubuser: ${{ secrets.GH_USER }}
+          ORG_GRADLE_PROJECT_githubtoken: ${{ secrets.GH_TOKEN }}
 
   publish_lib:
     name: Publish lib artifact
@@ -34,4 +37,3 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_githubuser: ${{ secrets.GH_USER }}
           ORG_GRADLE_PROJECT_githubtoken: ${{ secrets.GH_TOKEN }}
-          
