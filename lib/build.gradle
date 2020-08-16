@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'maven-publish'
 
+def versionMajor = project.property('versionMajor').toInteger()
+def versionMinor = project.property('versionMinor').toInteger()
+def versionPatch = project.property('versionPatch').toInteger()
+
 def getVersionCode = { ->
     return versionMajor * 100000 + versionMinor * 1000 + versionPatch
 }
@@ -10,10 +14,6 @@ def getVersionCode = { ->
 def getVersionName = { ->
     return "${versionMajor}.${versionMinor}.${versionPatch}"
 }
-
-def versionMajor = 0
-def versionMinor = 1
-def versionPatch = 0
 
 android {
     compileSdkVersion 30
