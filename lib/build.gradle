@@ -49,7 +49,18 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 }
 
 afterEvaluate {
+    println(githubuser)
     publishing {
+        repositories {
+            maven {
+                name = "GithubPackages"
+                url = uri("https://maven.pkg.github.com/wormoworm/jmri-roster-android")
+                credentials {
+                    username = githubuser ?: System.getenv("GITHUB_USER")
+                    password = githubtoken ?: System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
         publications {
             // Creates a Maven publication called "release".
             release(MavenPublication) {
