@@ -27,7 +27,7 @@ jobs:
           ORG_GRADLE_PROJECT_githubuser: ${{ secrets.GH_USER }}
           ORG_GRADLE_PROJECT_githubtoken: ${{ secrets.GH_TOKEN }}
       - name: Publish artifact
-        run: bash ./gradlew lib:publishReleasePublicationToGithubPackagesRepository
+        run: bash ./gradlew lib:publishReleasePublicationToGithubPackagesRepository -P versionPatch=${{ github.run_id }}
         env:
           ORG_GRADLE_PROJECT_githubuser: ${{ secrets.GH_USER }}
           ORG_GRADLE_PROJECT_githubtoken: ${{ secrets.GH_TOKEN }}
