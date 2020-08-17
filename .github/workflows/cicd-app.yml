@@ -52,6 +52,6 @@ jobs:
         with:
           serviceAccountJson: service_account.json
           packageName: uk.tomhomewood.jmriroster
-          releaseFile: ${{ SIGNED_RELEASE_FILE}}
+          releaseFile: ${{ SIGNED_RELEASE_FILE }}
           track: alpha
           #mappingFile: /app/build/outputs/mapping/release/mapping.txt
