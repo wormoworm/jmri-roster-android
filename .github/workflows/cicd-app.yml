@@ -36,6 +36,9 @@ jobs:
           java-version: 1.8
       - name: Assemble app bundle
         run: bash ./gradlew app:bundleRelease
+        env:
+          ORG_GRADLE_PROJECT_githubuser: ${{ secrets.GH_USER }}
+          ORG_GRADLE_PROJECT_githubtoken: ${{ secrets.GH_TOKEN }}
       - name: Sign Release
         uses: r0adkll/sign-android-release@v1.0.1
         with:
