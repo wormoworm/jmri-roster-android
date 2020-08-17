@@ -27,7 +27,7 @@ jobs:
     name: Publish app
     runs-on: ubuntu-18.04
     needs: test_app
-    if: "contains(github.event.head_commit.message, '#publish-app')"
+    #if: "contains(github.event.head_commit.message, '#publish-app')"
     steps:
       - uses: actions/checkout@v1
       - name: set up JDK 1.8
