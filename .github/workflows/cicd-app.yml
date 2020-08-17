@@ -46,7 +46,7 @@ jobs:
           keyStorePassword: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.RELEASE_KEYSTORE_ALIAS_JMRI_ROSTER_PASSWORD }}
       - name: Create service_account.json
-          run: echo '${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}' > service_account.json
+        run: echo '${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}' > service_account.json
       - name: Publish app to Google Play alpha channel
         uses: r0adkll/upload-google-play@v1.0.4
         with:
