@@ -2,6 +2,18 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+def versionMajor = project.property('versionMajor').toInteger()
+def versionMinor = project.property('versionMinor').toInteger()
+def versionPatch = project.property('versionPatch').toInteger()
+
+def getVersionCode = { ->
+    return versionMajor * 100000000 + versionMinor * 1000000 + versionPatch
+}
+
+def getVersionName = { ->
+    return "${versionMajor}.${versionMinor}.${versionPatch}"
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.1"
@@ -15,8 +27,8 @@ android {
         applicationId "uk.tomhomewood.jmriroster"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode getVersionCode()
+        versionName getVersionName()
 
         buildConfigField "String", "ROSTER_API_URL", "\"https://roster.tomstrains.co.uk/api/\""
 
