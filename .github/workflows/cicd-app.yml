@@ -22,14 +22,14 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_githubuser: ${{ secrets.GH_USER }}
           ORG_GRADLE_PROJECT_githubtoken: ${{ secrets.GH_TOKEN }}
-          ORG_GRADLE_PROJECT_keystorepath: ${{ secrets.RELEASE_KEYSTORE_PATH }}
+          ORG_GRADLE_PROJECT_keystorepath: release.jks
           ORG_GRADLE_PROJECT_keystorepassword: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           ORG_GRADLE_PROJECT_keypasswordjmriroster: ${{ secrets.RELEASE_KEYSTORE_ALIAS_JMRI_ROSTER_PASSWORD }}
 
   publish_app:
     name: Publish app
     runs-on: ubuntu-18.04
-    needs: test_app
+#    needs: test_app
     #if: "contains(github.event.head_commit.message, '#publish-app')"
     steps:
       - uses: actions/checkout@v1
@@ -38,13 +38,15 @@ jobs:
         with:
           java-version: 1.8
       - name: Deploy keystore
-        run: echo '${{ secrets.RELEASE_KEYSTORE }}' > ${{ secrets.RELEASE_KEYSTORE_PATH }}
+        run: echo '${{ secrets.RELEASE_KEYSTORE }}' > $ORG_GRADLE_PROJECT_keystorepath
+        env:
+          ORG_GRADLE_PROJECT_keystorepath: release.jks
       - name: Assemble app bundle
         run: bash ./gradlew app:bundleRelease
         env:
           ORG_GRADLE_PROJECT_githubuser: ${{ secrets.GH_USER }}
           ORG_GRADLE_PROJECT_githubtoken: ${{ secrets.GH_TOKEN }}
-          ORG_GRADLE_PROJECT_keystorepath: ${{ secrets.RELEASE_KEYSTORE_PATH }}
+          ORG_GRADLE_PROJECT_keystorepath: release.jks
           ORG_GRADLE_PROJECT_keystorepassword: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           ORG_GRADLE_PROJECT_keypasswordjmriroster: ${{ secrets.RELEASE_KEYSTORE_ALIAS_JMRI_ROSTER_PASSWORD }}
 #      - name: Sign Release
