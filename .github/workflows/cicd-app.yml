@@ -29,8 +29,8 @@ jobs:
   publish_app:
     name: Publish app
     runs-on: ubuntu-18.04
-    needs: test_app
-    if: "!contains(github.event.head_commit.message, '#skipci')"
+#    needs: test_app
+    if: "!contains(github.event.head_commit.message, '#skip-app-publish')"
     steps:
       - uses: actions/checkout@v1
       - name: set up JDK 1.8
@@ -58,4 +58,5 @@ jobs:
           packageName: uk.tomhomewood.jmriroster
           releaseFile: app/build/outputs/bundle/release/app-release.aab
           track: alpha
+          whatsNewDirectory: ${{ github.workspace }}/app/app-release-notes
           #mappingFile: /app/build/outputs/mapping/release/mapping.txt
