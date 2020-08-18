@@ -40,13 +40,13 @@ jobs:
       - name: Deploy keystore
         run: echo '${{ secrets.RELEASE_KEYSTORE }}' > $ORG_GRADLE_PROJECT_keystorepath
         env:
-          ORG_GRADLE_PROJECT_keystorepath: release.jks
+          ORG_GRADLE_PROJECT_keystorepath: ${{ github.workspace }}/release.jks
       - name: Assemble app bundle
         run: bash ./gradlew app:bundleRelease
         env:
           ORG_GRADLE_PROJECT_githubuser: ${{ secrets.GH_USER }}
           ORG_GRADLE_PROJECT_githubtoken: ${{ secrets.GH_TOKEN }}
-          ORG_GRADLE_PROJECT_keystorepath: release.jks
+          ORG_GRADLE_PROJECT_keystorepath: ${{ github.workspace }}/release.jks
           ORG_GRADLE_PROJECT_keystorepassword: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           ORG_GRADLE_PROJECT_keypasswordjmriroster: ${{ secrets.RELEASE_KEYSTORE_ALIAS_JMRI_ROSTER_PASSWORD }}
 #      - name: Sign Release
