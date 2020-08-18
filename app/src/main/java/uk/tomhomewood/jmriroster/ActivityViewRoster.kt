@@ -48,6 +48,7 @@ class RosterViewModel : ViewModel() {
         RosterApi(BuildConfig.ROSTER_API_URL)
     }
 
+
     private val rosterEntriesData: MutableLiveData<List<RosterEntry>> by lazy {
         MutableLiveData<List<RosterEntry>>().also {
             loadRoster()

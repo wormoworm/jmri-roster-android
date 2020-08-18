@@ -29,8 +29,8 @@ jobs:
   publish_app:
     name: Publish app
     runs-on: ubuntu-18.04
-#    needs: test_app
-    #if: "contains(github.event.head_commit.message, '#publish-app')"
+    needs: test_app
+    if: "!contains(github.event.head_commit.message, '#skipci')"
     steps:
       - uses: actions/checkout@v1
       - name: set up JDK 1.8
@@ -49,20 +49,12 @@ jobs:
           ORG_GRADLE_PROJECT_keystorepath: ${{ github.workspace }}/release.jks
           ORG_GRADLE_PROJECT_keystorepassword: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           ORG_GRADLE_PROJECT_keypasswordjmriroster: ${{ secrets.RELEASE_KEYSTORE_ALIAS_JMRI_ROSTER_PASSWORD }}
-#      - name: Sign Release
-#        uses: r0adkll/sign-android-release@v1.0.1
-#        with:
-#          releaseDirectory: app/build/outputs/bundle/release
-#          signingKeyBase64: ${{ secrets.RELEASE_KEYSTORE }}
-#          alias: jmri-roster
-#          keyStorePassword: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
-#          keyPassword: ${{ secrets.RELEASE_KEYSTORE_ALIAS_JMRI_ROSTER_PASSWORD }}
       - name: Deploy service_account.json
-        run: echo '${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}' > service_account.json
+        run: echo '${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}' > ${{ github.workspace }}/service_account.json
       - name: Publish app to Google Play alpha channel
         uses: r0adkll/upload-google-play@v1.0.4
         with:
-          serviceAccountJson: service_account.json
+          serviceAccountJson: ${{ github.workspace }}/service_account.json
           packageName: uk.tomhomewood.jmriroster
           releaseFile: app/build/outputs/bundle/release/app-release.aab
           track: alpha
