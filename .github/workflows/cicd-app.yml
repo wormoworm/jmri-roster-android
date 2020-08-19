@@ -59,4 +59,4 @@ jobs:
           releaseFile: ${{ github.workspace }}/app/build/outputs/bundle/release/app-release.aab
           track: alpha
           whatsNewDirectory: ${{ github.workspace }}/app/app-release-notes
-          mappingFile: ${{ github.workspace }}/app/build/outputs/mapping/release/mapping.txt
+#          mappingFile: ${{ github.workspace }}/app/build/outputs/mapping/release/mapping.txt
