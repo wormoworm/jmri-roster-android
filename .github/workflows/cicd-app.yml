@@ -56,7 +56,7 @@ jobs:
         with:
           serviceAccountJson: ${{ github.workspace }}/service_account.json
           packageName: uk.tomhomewood.jmriroster
-          releaseFile: app/build/outputs/bundle/release/app-release.aab
+          releaseFile: ${{ github.workspace }}/app/build/outputs/bundle/release/app-release.aab
           track: alpha
           whatsNewDirectory: ${{ github.workspace }}/app/app-release-notes
-          #mappingFile: /app/build/outputs/mapping/release/mapping.txt
+          mappingFile: ${{ github.workspace }}/app/build/outputs/mapping/release/mapping.txt
