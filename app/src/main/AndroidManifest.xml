@@ -19,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityViewRosterEntry">
+        <activity android:name=".ActivityViewRosterEntry"
+            android:theme="@style/AppTheme">
         </activity>
     </application>
 

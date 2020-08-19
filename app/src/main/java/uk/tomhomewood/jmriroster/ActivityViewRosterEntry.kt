@@ -5,11 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
+import kotlinx.android.synthetic.main.activity_view_roster_entry.*
 import kotlinx.coroutines.launch
 import uk.tomhomewood.jmriroster.lib.v1.*
 
@@ -22,6 +24,7 @@ class ActivityViewRosterEntry : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_roster_entry)
+        toolbar.setNavigationOnClickListener { onBackPressed() }
 
         val rosterId = getRosterIdFromIntent()
         if (rosterId!=null){
@@ -40,6 +43,7 @@ class ActivityViewRosterEntry : AppCompatActivity() {
     }
 
     private fun bindRosterEntry(rosterEntry: RosterEntry) {
+        toolbar.title = rosterEntry.number
         findViewById<TextView>(R.id.number).text = rosterEntry.number
         findViewById<TextView>(R.id.name).text = rosterEntry.name
         findViewById<TextView>(R.id.address).text = rosterEntry.dccAddress

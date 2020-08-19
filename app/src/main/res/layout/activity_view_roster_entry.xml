@@ -1,22 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="200dp"
+        android:fitsSystemWindows="true">
 
-        <ImageView
-            android:id="@+id/image"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@mipmap/sample_locomotive_image" />
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:statusBarScrim="?attr/colorPrimary"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.7"
+                tools:src="@mipmap/sample_locomotive_image" />
+
+            <androidx.appcompat.widget.Toolbar
+                app:navigationIcon="?attr/homeAsUpIndicator"
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,10 +53,11 @@
             app:layout_constraintTop_toBottomOf="@id/image">
 
             <TextView
+                android:layout_marginTop="400dp"
                 style="@style/TextAppearance.AppCompat.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_roster_entry_number"/>
+                android:text="@string/label_roster_entry_number" />
 
             <TextView
                 android:id="@+id/number"
@@ -38,10 +67,11 @@
                 tools:text="66957" />
 
             <TextView
+                android:layout_marginTop="400dp"
                 style="@style/TextAppearance.AppCompat.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_roster_entry_name"/>
+                android:text="@string/label_roster_entry_name" />
 
             <TextView
                 android:id="@+id/name"
@@ -51,10 +81,11 @@
                 tools:text="Stephenson Locomotive Society 1909 - 2009" />
 
             <TextView
+                android:layout_marginTop="400dp"
                 style="@style/TextAppearance.AppCompat.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_roster_entry_address"/>
+                android:text="@string/label_roster_entry_address" />
 
             <TextView
                 android:id="@+id/address"
@@ -65,6 +96,6 @@
 
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
-</ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -71,6 +71,8 @@ dependencies {
     implementation ('com.github.thekhaeng:recycler-margin:1.2.1') {
         exclude group: 'com.android.support', module: 'recyclerview-v7'
     }
+    implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
+    implementation 'com.google.android.material:material:1.2.0'
 
     implementation project(":lib")
 
