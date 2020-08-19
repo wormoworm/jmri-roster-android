@@ -31,6 +31,8 @@ class ActivityViewRoster : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_roster)
 
+        launchViewRosterEntryForResult("66957", 1)
+
         val rosterList = findViewById<RecyclerView>(R.id.roster_list)
         rosterList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rosterList.addItemDecoration(LayoutMarginDecoration(1, resources.getDimensionPixelSize(R.dimen.margin_vertical_medium)))
