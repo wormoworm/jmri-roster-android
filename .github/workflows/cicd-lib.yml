@@ -30,7 +30,7 @@ jobs:
     name: Publish lib artifact
     runs-on: ubuntu-18.04
     needs: test_lib
-      if: "!contains(github.event.head_commit.message, '#skip-lib-publish')"
+    if: "!contains(github.event.head_commit.message, '#skip-lib-publish')"
     steps:
       - uses: actions/checkout@v1
       - name: set up JDK 1.8
