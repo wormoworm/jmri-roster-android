@@ -16,6 +16,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.transform.Transformation
 import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration
 import kotlinx.coroutines.launch
 import uk.tomhomewood.jmriroster.lib.v1.Result
@@ -31,7 +32,7 @@ class ActivityViewRoster : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_roster)
 
-        launchViewRosterEntryForResult("66957", 1)
+//        launchViewRosterEntryForResult("66957", 1)
 
         val rosterList = findViewById<RecyclerView>(R.id.roster_list)
         rosterList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)

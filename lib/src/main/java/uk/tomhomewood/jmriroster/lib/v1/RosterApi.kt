@@ -1,8 +1,9 @@
 package uk.tomhomewood.jmriroster.lib.v1
 
+import android.content.Context
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
-import coil.api.load
+import coil.transform.Transformation
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -20,11 +21,9 @@ interface RosterApiInterface{
     suspend fun getRoster(): Result<RosterResponse>
 
     suspend fun getRosterEntry(id: String): Result<RosterEntryResponse>
-
-    fun loadRosterEntryImage(id: String, size: Int, imageView: ImageView, @DrawableRes fallbackResId: Int = NO_FALLBACK)
 }
 
-class RosterApi(private val baseUrl: String, private val dispatcher: CoroutineDispatcher = Dispatchers.IO): RosterApiInterface {
+class RosterApi(baseUrl: String, private val dispatcher: CoroutineDispatcher = Dispatchers.IO): RosterApiInterface {
 
     private var roster: Roster = Retrofit.Builder()
         .baseUrl(baseUrl)
@@ -39,29 +38,6 @@ class RosterApi(private val baseUrl: String, private val dispatcher: CoroutineDi
     override suspend fun getRosterEntry(id: String): Result<RosterEntryResponse> {
         return safeApiCall(dispatcher) { roster.getRosterEntry(id) }
     }
-
-    override fun loadRosterEntryImage(id: String, size: Int, imageView: ImageView, @DrawableRes fallbackResId: Int) {
-        RosterEntryImageLoader(baseUrl).loadRosterEntryImage(id, size, imageView, fallbackResId)
-    }
-}
-
-class RosterEntryImageLoader(private val baseUrl: String) {
-    private val imageUrlFormat ="%sv1/locomotive/%s/image/%d"
-
-    fun loadRosterEntryImage(id: String, size: Int, imageView: ImageView, @DrawableRes fallbackResId: Int = NO_FALLBACK) {
-        if (fallbackResId != NO_FALLBACK) {
-            imageView.load(imageUrlFormat.format(baseUrl, id, size)) {
-                error(fallbackResId)
-            }
-        }
-        else {
-            imageView.load(imageUrlFormat.format(baseUrl, id, size))
-        }
-    }
-}
-
-fun ImageView.loadRosterEntryImage(baseUrl: String, id: String, size: Int, @DrawableRes fallbackResId: Int = NO_FALLBACK) {
-    RosterEntryImageLoader(baseUrl).loadRosterEntryImage(id, size, this, fallbackResId)
 }
 
 suspend fun <T> safeApiCall(dispatcher: CoroutineDispatcher, apiCall: suspend () -> T): Result<T> {
