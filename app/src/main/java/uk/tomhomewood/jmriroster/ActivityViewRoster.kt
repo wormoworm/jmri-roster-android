@@ -16,6 +16,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.annotation.ExperimentalCoilApi
 import coil.transform.Transformation
 import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration
 import kotlinx.coroutines.launch
@@ -32,7 +33,7 @@ class ActivityViewRoster : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_roster)
 
-//        launchViewRosterEntryForResult("66957", 1)
+        launchViewRosterEntryForResult("66957", 1)
 
         val rosterList = findViewById<RecyclerView>(R.id.roster_list)
         rosterList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
@@ -110,6 +111,7 @@ class RosterListViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(LayoutIn
         parent.resources.getDimensionPixelSize(R.dimen.roster_list_item_height)
     }
 
+    @ExperimentalCoilApi
     fun bindRosterEntry(rosterEntry: RosterEntry) {
         itemView.findViewById<TextView>(R.id.number).text = rosterEntry.number
         itemView.findViewById<TextView>(R.id.name).text = rosterEntry.name

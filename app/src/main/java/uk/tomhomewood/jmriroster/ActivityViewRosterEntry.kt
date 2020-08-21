@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.activity_view_roster_entry.*
 import kotlinx.coroutines.launch
 import uk.tomhomewood.jmriroster.lib.v1.*
 import coil.transform.Transformation
+import coil.transition.CrossfadeTransition
+import coil.transition.Transition
 import com.google.android.material.appbar.CollapsingToolbarLayout
 
 class ActivityViewRosterEntry : AppCompatActivity() {
@@ -38,14 +40,7 @@ class ActivityViewRosterEntry : AppCompatActivity() {
                     rosterEntry -> bindRosterEntry(rosterEntry)
             })
             testView = findViewById(R.id.number)
-            var transformations = ArrayList<Transformation>()
-            transformations.add(object: PaletteTransformation(){
-                override fun paletteAvailable(palette: Palette) {
-                    Log.d("123", "paletteAvailable")
-                    applyPaletteForRosterEntry(palette)
-                }
-            })
-            RosterImageLoader.get(this, BuildConfig.ROSTER_API_URL).loadRosterEntryImage(rosterId, 1000, findViewById(R.id.image), transformations = transformations)
+            RosterImageLoader.get(this, BuildConfig.ROSTER_API_URL).loadRosterEntryImage(rosterId, 1000, findViewById(R.id.image), transition = PaletteTransition(){ palette -> applyPaletteForRosterEntry(palette) })
         }
     }
 
@@ -62,8 +57,8 @@ class ActivityViewRosterEntry : AppCompatActivity() {
 
     private fun applyPaletteForRosterEntry(palette: Palette) {
         Log.d("Palette", "Colour: "+palette.getDominantColor(0))
-        testView.postDelayed(Runnable {  testView.setTextColor(palette.getVibrantColor(0))}, 500)
-
+        testView.setTextColor(palette.getVibrantColor(0))
+//        testView.post(Runnable {  testView.setTextColor(palette.getVibrantColor(0))})
     }
 }
 

@@ -2,15 +2,28 @@ package uk.tomhomewood.jmriroster.lib.v1
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.os.Build
+import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.palette.graphics.Palette
 import coil.ImageLoader
+import coil.annotation.ExperimentalCoilApi
 import coil.bitmappool.BitmapPool
 import coil.map.Mapper
 import coil.request.ImageRequest
+import coil.request.ImageResult
+import coil.request.RequestResult
+import coil.request.SuccessResult
 import coil.size.Size
 import coil.transform.Transformation
+import coil.transition.Transition
+import coil.transition.TransitionTarget
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RosterImageLoader(private val context: Context, private val baseUrl: String) {
     companion object {
@@ -32,14 +45,18 @@ class RosterImageLoader(private val context: Context, private val baseUrl: Strin
         }
         .build()
 
-    fun loadRosterEntryImage(id: String, size: Int, imageView: ImageView, @DrawableRes fallbackResId: Int = NO_FALLBACK, transformations: List<Transformation> = ArrayList()) {
+    @ExperimentalCoilApi
+    fun loadRosterEntryImage(id: String, size: Int, imageView: ImageView, @DrawableRes fallbackResId: Int = NO_FALLBACK, transition: Transition? = null, transformations: List<Transformation> = ArrayList()) {
 
         val imageRequest = ImageRequest.Builder(context)
             .data(RosterEntryImageParams(id, size))
             .target(imageView)
+            .allowHardware(!isEmulator())
 
+        Log.d("Palette", "Emulator: "+ isEmulator())
         if (fallbackResId != NO_FALLBACK) imageRequest.error(fallbackResId)
         if (transformations.isNotEmpty()) imageRequest.transformations(transformations)
+        if (transition != null) imageRequest.transition(transition)
 
         imageLoader.enqueue(imageRequest.build())
     }
@@ -56,17 +73,37 @@ class RosterIdMapper(private val baseUrl: String) : Mapper<RosterEntryImageParam
     override fun map(data: RosterEntryImageParams) = imageUrlFormat.format(baseUrl, data.id, data.size)
 }
 
-fun ImageView.loadRosterEntryImage(baseUrl: String, id: String, size: Int, @DrawableRes fallbackResId: Int = NO_FALLBACK, transformations: List<Transformation> = ArrayList()) {
-    RosterImageLoader.get(context, baseUrl).loadRosterEntryImage(id, size, this, fallbackResId, transformations)
+@ExperimentalCoilApi
+fun ImageView.loadRosterEntryImage(baseUrl: String, id: String, size: Int, @DrawableRes fallbackResId: Int = NO_FALLBACK, transition: Transition? = null, transformations: List<Transformation> = ArrayList()) {
+    RosterImageLoader.get(context, baseUrl).loadRosterEntryImage(id, size, this, fallbackResId, transition, transformations)
 }
 
-abstract class PaletteTransformation: Transformation {
-    override fun key() = "PaletteTransformation" + System.currentTimeMillis()
+@ExperimentalCoilApi
+class PaletteTransition(private val delegate: Transition = Transition.NONE, private val onGenerated: (Palette) -> Unit) : Transition {
 
-    override suspend fun transform(pool: BitmapPool, input: Bitmap, size: Size): Bitmap {
-        paletteAvailable(Palette.from(input).generate())
-        return input
+    override suspend fun transition(target: TransitionTarget, result: ImageResult) {
+
+        // Execute the delegate transition.
+        val delegateJob = delegate?.let { delegate ->
+            coroutineScope {
+                launch(Dispatchers.Main.immediate) {
+                    delegate.transition(target, result)
+                }
+            }
+        }
+
+        // Compute the palette on a background thread.
+        if (result is SuccessResult) {
+            val bitmap = (result.drawable as BitmapDrawable).bitmap
+            val palette = withContext(Dispatchers.IO) {
+                Palette.Builder(bitmap).generate()
+            }
+            onGenerated(palette)
+        }
+        delegateJob?.join()
     }
+}
 
-    abstract fun paletteAvailable(palette: Palette)
+fun isEmulator(): Boolean {
+    return Build.FINGERPRINT.contains("generic")
 }
