@@ -33,7 +33,7 @@ class ActivityViewRoster : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_roster)
 
-        launchViewRosterEntryForResult("66957", 1)
+        launchViewRosterEntryForResult("66789", 1)
 
         val rosterList = findViewById<RecyclerView>(R.id.roster_list)
         rosterList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)

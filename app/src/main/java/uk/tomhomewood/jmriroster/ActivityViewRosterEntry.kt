@@ -1,13 +1,16 @@
 package uk.tomhomewood.jmriroster
 
 import android.content.Intent
+import android.graphics.RectF
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
 import androidx.palette.graphics.Palette
 import kotlinx.android.synthetic.main.activity_view_roster_entry.*
@@ -40,7 +43,7 @@ class ActivityViewRosterEntry : AppCompatActivity() {
                     rosterEntry -> bindRosterEntry(rosterEntry)
             })
             toolbarLayout = findViewById(R.id.toolbar_layout)
-            RosterImageLoader.get(this, BuildConfig.ROSTER_API_URL).loadRosterEntryImage(rosterId, 1000, findViewById(R.id.image), transition = PaletteTransition(){ palette -> applyPaletteForRosterEntry(palette) })
+            RosterImageLoader.get(this, BuildConfig.ROSTER_API_URL).loadRosterEntryImage(rosterId, 1000, findViewById(R.id.image), transition = PaletteTransition(region = RectF(0.1F, 0.1F, 0.9F, 0.9F), colourFilter = RosterImageColourFilter()){ palette -> applyPaletteForRosterEntry(palette) })
         }
     }
 
@@ -56,10 +59,30 @@ class ActivityViewRosterEntry : AppCompatActivity() {
     }
 
     private fun applyPaletteForRosterEntry(palette: Palette) {
-        Log.d("Palette", "Colour: "+palette.getDominantColor(0))
-        toolbarLayout.setContentScrimColor(palette.getDarkVibrantColor(0))
+        // Show the colour palette if requested
+        if (showColourPalette()) {
+            findViewById<ViewGroup>(R.id.palette_demo).visibility = View.VISIBLE
+            findViewById<TextView>(R.id.palette_demo_light_vibrant).setBackgroundColor(palette.getLightVibrantColor(0))
+            findViewById<TextView>(R.id.palette_demo_vibrant).setBackgroundColor(palette.getVibrantColor(0))
+            findViewById<TextView>(R.id.palette_demo_dark_vibrant).setBackgroundColor(palette.getDarkVibrantColor(0))
+            findViewById<TextView>(R.id.palette_demo_light_muted).setBackgroundColor(palette.getLightMutedColor(0))
+            findViewById<TextView>(R.id.palette_demo_muted).setBackgroundColor(palette.getMutedColor(0))
+            findViewById<TextView>(R.id.palette_demo_dark_muted).setBackgroundColor(palette.getDarkMutedColor(0))
+        }
+        toolbarLayout.setContentScrimColor(palette.darkVibrantSwatch?.rgb ?: palette.vibrantSwatch?.rgb ?: ContextCompat.getColor(this, R.color.colorPrimary))
 
 //        testView.post(Runnable {  testView.setTextColor(palette.getVibrantColor(0))})
+    }
+
+    private fun showColourPalette(): Boolean {
+        return BuildConfig.DEBUG
+    }
+}
+
+class RosterImageColourFilter: Palette.Filter {
+
+    override fun isAllowed(rgb: Int, hsl: FloatArray): Boolean {
+        TODO("Not yet implemented")
     }
 }
 

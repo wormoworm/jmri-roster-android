@@ -2,6 +2,8 @@ package uk.tomhomewood.jmriroster.lib.v1
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Rect
+import android.graphics.RectF
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.util.Log
@@ -24,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.roundToInt
 
 class RosterImageLoader(private val context: Context, private val baseUrl: String) {
     companion object {
@@ -79,7 +82,7 @@ fun ImageView.loadRosterEntryImage(baseUrl: String, id: String, size: Int, @Draw
 }
 
 @ExperimentalCoilApi
-class PaletteTransition(private val delegate: Transition = Transition.NONE, private val onGenerated: (Palette) -> Unit) : Transition {
+class PaletteTransition(private val delegate: Transition = Transition.NONE, private val region: RectF? = null, private val colourFilter: Palette.Filter? = null, private val onGenerated: (Palette) -> Unit) : Transition {
 
     override suspend fun transition(target: TransitionTarget, result: ImageResult) {
 
@@ -96,11 +99,29 @@ class PaletteTransition(private val delegate: Transition = Transition.NONE, priv
         if (result is SuccessResult) {
             val bitmap = (result.drawable as BitmapDrawable).bitmap
             val palette = withContext(Dispatchers.IO) {
-                Palette.Builder(bitmap).generate()
+                val builder = Palette.Builder(bitmap)
+                if (region != null) {
+                    val region = calculateRegionForBitmap(region, bitmap)
+                    Log.d("Image", "Region will be (LTRB): ${region.left}, ${region.top}, ${region.right}, ${region.bottom}}")
+                    builder.setRegion(region.left, region.top, region.right, region.bottom )
+                }
+                if (colourFilter != null) {
+                    builder.addFilter(colourFilter)
+                }
+                builder.generate()
             }
             onGenerated(palette)
         }
         delegateJob?.join()
+    }
+
+    private fun calculateRegionForBitmap(region: RectF, bitmap: Bitmap): Rect {
+        return Rect(
+            (region.left * bitmap.width).roundToInt(),
+            (region.top * bitmap.height).roundToInt(),
+            (region.right * bitmap.width).roundToInt(),
+            (region.bottom * bitmap.height).roundToInt()
+        )
     }
 }
 
