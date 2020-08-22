@@ -33,6 +33,7 @@ class RosterApi(baseUrl: String, private val dispatcher: CoroutineDispatcher = D
     override suspend fun getRosterEntry(id: String): Result<RosterEntryResponse> {
         return safeApiCall(dispatcher) { roster.getRosterEntry(id) }
     }
+    
 }
 
 suspend fun <T> safeApiCall(dispatcher: CoroutineDispatcher, apiCall: suspend () -> T): Result<T> {

@@ -15,16 +15,6 @@ def getVersionName = { ->
     return "${versionMajor}.${versionMinor}.${versionPatch}"
 }
 
-def getOptionalProperty(propertyName, defaultValue) {
-    System.out.println("Has property "+propertyName+": "+project.hasProperty(propertyName))
-    if (project.hasProperty(propertyName)) {
-        return project.findProperty(propertyName)
-    }
-    else {
-        return defaultValue
-    }
-}
-
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.1"
@@ -65,8 +55,8 @@ afterEvaluate {
                 name = "GithubPackages"
                 url = uri("https://maven.pkg.github.com/wormoworm/jmri-roster-android")
                 credentials {
-                    username = getOptionalProperty("githubuser", "")
-                    password = getOptionalProperty("githubtoken", "")
+                    username = project.findProperty("githubuser") ?: ""
+                    password = project.findProperty("githubtoken") ?: ""
                 }
             }
         }

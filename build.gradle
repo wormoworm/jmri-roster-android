@@ -22,8 +22,8 @@ allprojects {
             name("Github")
             url("https://maven.pkg.github.com/wormoworm")
             credentials {
-                username = githubuser
-                password = githubtoken
+                username = project.findProperty("githubuser") ?: ""
+                password = project.findProperty("githubtoken") ?: ""
             }
         }
     }
