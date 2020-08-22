@@ -37,10 +37,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(project.findProperty("keystorepath") ?: "")
-            storePassword project.findProperty("keystorepassword") ?: ""
+            storeFile file(project.findProperty("keystorepath") ?: "notset")
+            storePassword project.findProperty("keystorepassword") ?: "notset"
             keyAlias "jmri-roster"
-            keyPassword project.findProperty("keypasswordjmriroster") ?: ""
+            keyPassword project.findProperty("keypasswordjmriroster") ?: "notset"
         }
     }
 

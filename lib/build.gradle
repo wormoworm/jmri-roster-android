@@ -55,8 +55,8 @@ afterEvaluate {
                 name = "GithubPackages"
                 url = uri("https://maven.pkg.github.com/wormoworm/jmri-roster-android")
                 credentials {
-                    username = project.findProperty("githubuser") ?: ""
-                    password = project.findProperty("githubtoken") ?: ""
+                    username = project.findProperty("githubuser") ?: "notset"
+                    password = project.findProperty("githubtoken") ?: "notset"
                 }
             }
         }
