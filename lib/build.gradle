@@ -16,6 +16,7 @@ def getVersionName = { ->
 }
 
 def getOptionalProperty(propertyName, defaultValue) {
+    System.out.println("Has property "+propertyName+": "+project.hasProperty(propertyName))
     if (project.hasProperty(propertyName)) {
         return project.findProperty(propertyName)
     }
