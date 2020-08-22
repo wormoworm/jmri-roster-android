@@ -51,7 +51,7 @@ class ActivityViewRosterEntry : AppCompatActivity() {
     private fun bindRosterEntry(rosterEntry: RosterEntry) {
         toolbar.title = rosterEntry.number
         findViewById<TextView>(R.id.number).text = rosterEntry.number
-        findViewById<TextView>(R.id.name).text = rosterEntry.nameex
+        findViewById<TextView>(R.id.name).text = rosterEntry.name
         findViewById<TextView>(R.id.address).text = rosterEntry.dccAddress
     }
 
