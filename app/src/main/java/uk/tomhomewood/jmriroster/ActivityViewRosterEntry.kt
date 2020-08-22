@@ -24,7 +24,7 @@ class ActivityViewRosterEntry : AppCompatActivity() {
         const val EXTRA_ROSTER_ID: String = "rosterId"
     }
 
-    lateinit var testView: TextView
+    lateinit var toolbarLayout: CollapsingToolbarLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +39,7 @@ class ActivityViewRosterEntry : AppCompatActivity() {
             model.getRosterEntry().observe(this, Observer<RosterEntry>{
                     rosterEntry -> bindRosterEntry(rosterEntry)
             })
-            testView = findViewById(R.id.number)
+            toolbarLayout = findViewById(R.id.toolbar_layout)
             RosterImageLoader.get(this, BuildConfig.ROSTER_API_URL).loadRosterEntryImage(rosterId, 1000, findViewById(R.id.image), transition = PaletteTransition(){ palette -> applyPaletteForRosterEntry(palette) })
         }
     }
@@ -51,13 +51,14 @@ class ActivityViewRosterEntry : AppCompatActivity() {
     private fun bindRosterEntry(rosterEntry: RosterEntry) {
         toolbar.title = rosterEntry.number
         findViewById<TextView>(R.id.number).text = rosterEntry.number
-        findViewById<TextView>(R.id.name).text = rosterEntry.name
+        findViewById<TextView>(R.id.name).text = rosterEntry.nameex
         findViewById<TextView>(R.id.address).text = rosterEntry.dccAddress
     }
 
     private fun applyPaletteForRosterEntry(palette: Palette) {
         Log.d("Palette", "Colour: "+palette.getDominantColor(0))
-        testView.setTextColor(palette.getVibrantColor(0))
+        toolbarLayout.setContentScrimColor(palette.getDarkVibrantColor(0))
+
 //        testView.post(Runnable {  testView.setTextColor(palette.getVibrantColor(0))})
     }
 }
