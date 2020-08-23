@@ -1,6 +1,5 @@
 package uk.tomhomewood.jmriroster.lib.v1
 
-import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.Dispatcher
@@ -16,13 +15,13 @@ import java.net.HttpURLConnection
 class ApiResponseTests {
 
     private var mockWebServer = MockWebServer()
+
+    private val testRosterJson = "{\"locomotives\": [{\"id\": \"123\",\"dccAddress\": \"123\",\"fileName\": \"123.xml\",\"number\": \"123\",\"name\": \"One two three\",\"manufacturer\": \"Company\",\"model\": \"Model one\",\"owner\": \"John Smith\",\"comment\": \"Line one\\nLine two.\",\"imageFilePath\": \"roster\\/123.jpg\",\"functions\": [{\"number\": 0,\"name\": \"Light\",\"lockable\": true}, {\"number\": 1,\"name\": \"Bell\",\"lockable\": false}]},{\"id\": \"456\",\"dccAddress\": \"456\",\"fileName\": \"456.xml\",\"number\": \"456\",\"name\": \"Four five six\",\"manufacturer\": \"Company\",\"model\": \"Model two\",\"owner\": \"John Smith\",\"comment\": \"Line one\\nLine two.\",\"imageFilePath\": \"roster\\/456.jpg\"}],\"created\": 1589649974,\"modified\": 1589649956,\"loadTime\": 7,\"metadata\": []}"
+    private val testRosterEntryJson = "{\"locomotive\": {\"id\": \"123\",\"dccAddress\": \"123\",\"fileName\": \"123.xml\",\"number\": \"123\",\"name\": \"One two three\",\"manufacturer\": \"Company\",\"model\": \"Model one\",\"owner\": \"John Smith\",\"comment\": \"Line one\\nLine two.\",\"imageFilePath\": \"roster\\/123.jpg\",\"functions\": [{\"number\": 0,\"name\": \"Light\",\"lockable\": true}, {\"number\": 1,\"name\": \"Bell\",\"lockable\": false}]},\"created\": 1589649951,\"modified\": 1589649941,\"loadTime\": 7,\"metadata\": []}"
+
     private lateinit var rosterApi: RosterApi
     private lateinit var testRoster: RosterResponse
     private lateinit var testRosterEntry: RosterEntryResponse
-    private lateinit var moshi: Moshi
-    private lateinit var rosterAdapter: JsonAdapter<RosterResponse>
-    private lateinit var rosterEntryAdapter: JsonAdapter<RosterEntryResponse>
-
 
     private var serverReturn500: Boolean = false
 
@@ -38,13 +37,13 @@ class ApiResponseTests {
                     "/v1/roster" -> {
                         MockResponse()
                             .setResponseCode(HttpURLConnection.HTTP_OK)
-                            .setBody(rosterAdapter.toJson(testRoster))
+                            .setBody(testRosterJson)
                     }
                     // Roster entry "123" will return a standard roster entry response.
                     "/v1/locomotive/123" -> {
                         MockResponse()
                             .setResponseCode(HttpURLConnection.HTTP_OK)
-                            .setBody(rosterEntryAdapter.toJson(testRosterEntry))
+                            .setBody(testRosterEntryJson)
                     }
                     // Roster entry "000" does not exist, so a 404 will be returned.
                     "/v1/locomotive/000" -> {
@@ -68,12 +67,12 @@ class ApiResponseTests {
 
         rosterApi = RosterApi(mockWebServer.url("/").toString())
 
-        moshi = Moshi.Builder().build()
-        rosterAdapter = moshi.adapter(RosterResponse::class.java)
-        rosterEntryAdapter = moshi.adapter(RosterEntryResponse::class.java)
+        val moshi = Moshi.Builder().build()
+        val rosterAdapter = moshi.adapter(RosterResponse::class.java)
+        val rosterEntryAdapter = moshi.adapter(RosterEntryResponse::class.java)
 
-        testRoster = rosterAdapter.fromJson("{\"locomotives\": [{\"id\": \"123\",\"dccAddress\": \"123\",\"fileName\": \"123.xml\",\"number\": \"123\",\"name\": \"One two three\",\"manufacturer\": \"Company\",\"model\": \"Model one\",\"owner\": \"John Smith\",\"comment\": \"Line one\\nLine two.\",\"imageFilePath\": \"roster\\/123.jpg\",\"functions\": [{\"number\": 0,\"name\": \"Light\",\"lockable\": true}, {\"number\": 1,\"name\": \"Bell\",\"lockable\": false}]},{\"id\": \"456\",\"dccAddress\": \"456\",\"fileName\": \"456.xml\",\"number\": \"456\",\"name\": \"Four five six\",\"manufacturer\": \"Company\",\"model\": \"Model two\",\"owner\": \"John Smith\",\"comment\": \"Line one\\nLine two.\",\"imageFilePath\": \"roster\\/456.jpg\"}],\"created\": 1589649974,\"modified\": 1589649956,\"loadTime\": 7,\"metadata\": []}")!!
-        testRosterEntry = rosterEntryAdapter.fromJson("{\"locomotive\": {\"id\": \"123\",\"dccAddress\": \"123\",\"fileName\": \"123.xml\",\"number\": \"123\",\"name\": \"One two three\",\"manufacturer\": \"Company\",\"model\": \"Model one\",\"owner\": \"John Smith\",\"comment\": \"Line one\\nLine two.\",\"imageFilePath\": \"roster\\/123.jpg\",\"functions\": [{\"number\": 0,\"name\": \"Light\",\"lockable\": true}, {\"number\": 1,\"name\": \"Bell\",\"lockable\": false}]},\"created\": 1589649951,\"modified\": 1589649941,\"loadTime\": 7,\"metadata\": []}")!!
+        testRoster = rosterAdapter.fromJson(testRosterJson)!!
+        testRosterEntry = rosterEntryAdapter.fromJson(testRosterEntryJson)!!
     }
 
     @After
