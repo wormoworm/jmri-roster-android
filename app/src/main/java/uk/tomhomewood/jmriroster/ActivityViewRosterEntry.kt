@@ -43,7 +43,7 @@ class ActivityViewRosterEntry : AppCompatActivity() {
                     rosterEntry -> bindRosterEntry(rosterEntry)
             })
             toolbarLayout = findViewById(R.id.toolbar_layout)
-            RosterImageLoader.get(this, BuildConfig.ROSTER_API_URL).loadRosterEntryImage(rosterId, 1000, findViewById(R.id.image), transition = PaletteTransition(region = RectF(0.1F, 0.1F, 0.9F, 0.9F), colourFilter = RosterImageColourFilter()){ palette -> applyPaletteForRosterEntry(palette) })
+            RosterImageLoader.get(this, BuildConfig.ROSTER_API_URL).loadRosterEntryImage(rosterId, 1000, findViewById(R.id.image), transition = PaletteTransition(region = RectF(0.1F, 0.1F, 0.9F, 0.9F)){ palette -> applyPaletteForRosterEntry(palette) })
         }
     }
 
@@ -76,13 +76,6 @@ class ActivityViewRosterEntry : AppCompatActivity() {
 
     private fun showColourPalette(): Boolean {
         return BuildConfig.DEBUG
-    }
-}
-
-class RosterImageColourFilter: Palette.Filter {
-
-    override fun isAllowed(rgb: Int, hsl: FloatArray): Boolean {
-        TODO("Not yet implemented")
     }
 }
 
