@@ -1,7 +1,7 @@
 package uk.tomhomewood.jmriroster.lib.v1
 
-import com.google.gson.Gson
-import com.google.gson.JsonObject
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
@@ -17,8 +17,12 @@ class ApiResponseTests {
 
     private var mockWebServer = MockWebServer()
     private lateinit var rosterApi: RosterApi
-    private lateinit var testRoster: JsonObject
-    private lateinit var testRosterEntry: JsonObject
+    private lateinit var testRoster: RosterResponse
+    private lateinit var testRosterEntry: RosterEntryResponse
+    private lateinit var moshi: Moshi
+    private lateinit var rosterAdapter: JsonAdapter<RosterResponse>
+    private lateinit var rosterEntryAdapter: JsonAdapter<RosterEntryResponse>
+
 
     private var serverReturn500: Boolean = false
 
@@ -34,13 +38,13 @@ class ApiResponseTests {
                     "/v1/roster" -> {
                         MockResponse()
                             .setResponseCode(HttpURLConnection.HTTP_OK)
-                            .setBody(testRoster.toString())
+                            .setBody(rosterAdapter.toJson(testRoster))
                     }
                     // Roster entry "123" will return a standard roster entry response.
                     "/v1/locomotive/123" -> {
                         MockResponse()
                             .setResponseCode(HttpURLConnection.HTTP_OK)
-                            .setBody(testRosterEntry.toString())
+                            .setBody(rosterEntryAdapter.toJson(testRosterEntry))
                     }
                     // Roster entry "000" does not exist, so a 404 will be returned.
                     "/v1/locomotive/000" -> {
@@ -64,8 +68,12 @@ class ApiResponseTests {
 
         rosterApi = RosterApi(mockWebServer.url("/").toString())
 
-        testRoster = Gson().fromJson("{\"locomotives\": [{\"id\": \"123\",\"dccAddress\": \"123\",\"fileName\": \"123.xml\",\"number\": \"123\",\"name\": \"One two three\",\"manufacturer\": \"Company\",\"model\": \"Model one\",\"owner\": \"John Smith\",\"comment\": \"Line one\\nLine two.\",\"imageFilePath\": \"roster\\/123.jpg\",\"functions\": [{\"number\": 0,\"name\": \"Light\",\"lockable\": true}, {\"number\": 1,\"name\": \"Bell\",\"lockable\": false}]},{\"id\": \"456\",\"dccAddress\": \"456\",\"fileName\": \"456.xml\",\"number\": \"456\",\"name\": \"Four five six\",\"manufacturer\": \"Company\",\"model\": \"Model two\",\"owner\": \"John Smith\",\"comment\": \"Line one\\nLine two.\",\"imageFilePath\": \"roster\\/456.jpg\"}],\"created\": 1589649974,\"modified\": 1589649956,\"loadTime\": 7,\"metadata\": []}", JsonObject::class.java)
-        testRosterEntry = Gson().fromJson("{\"locomotive\": {\"id\": \"123\",\"dccAddress\": \"123\",\"fileName\": \"123.xml\",\"number\": \"123\",\"name\": \"One two three\",\"manufacturer\": \"Company\",\"model\": \"Model one\",\"owner\": \"John Smith\",\"comment\": \"Line one\\nLine two.\",\"imageFilePath\": \"roster\\/123.jpg\",\"functions\": [{\"number\": 0,\"name\": \"Light\",\"lockable\": true}, {\"number\": 1,\"name\": \"Bell\",\"lockable\": false}]},\"created\": 1589649951,\"modified\": 1589649941,\"loadTime\": 7,\"metadata\": []}", JsonObject::class.java)
+        moshi = Moshi.Builder().build()
+        rosterAdapter = moshi.adapter(RosterResponse::class.java)
+        rosterEntryAdapter = moshi.adapter(RosterEntryResponse::class.java)
+
+        testRoster = rosterAdapter.fromJson("{\"locomotives\": [{\"id\": \"123\",\"dccAddress\": \"123\",\"fileName\": \"123.xml\",\"number\": \"123\",\"name\": \"One two three\",\"manufacturer\": \"Company\",\"model\": \"Model one\",\"owner\": \"John Smith\",\"comment\": \"Line one\\nLine two.\",\"imageFilePath\": \"roster\\/123.jpg\",\"functions\": [{\"number\": 0,\"name\": \"Light\",\"lockable\": true}, {\"number\": 1,\"name\": \"Bell\",\"lockable\": false}]},{\"id\": \"456\",\"dccAddress\": \"456\",\"fileName\": \"456.xml\",\"number\": \"456\",\"name\": \"Four five six\",\"manufacturer\": \"Company\",\"model\": \"Model two\",\"owner\": \"John Smith\",\"comment\": \"Line one\\nLine two.\",\"imageFilePath\": \"roster\\/456.jpg\"}],\"created\": 1589649974,\"modified\": 1589649956,\"loadTime\": 7,\"metadata\": []}")!!
+        testRosterEntry = rosterEntryAdapter.fromJson("{\"locomotive\": {\"id\": \"123\",\"dccAddress\": \"123\",\"fileName\": \"123.xml\",\"number\": \"123\",\"name\": \"One two three\",\"manufacturer\": \"Company\",\"model\": \"Model one\",\"owner\": \"John Smith\",\"comment\": \"Line one\\nLine two.\",\"imageFilePath\": \"roster\\/123.jpg\",\"functions\": [{\"number\": 0,\"name\": \"Light\",\"lockable\": true}, {\"number\": 1,\"name\": \"Bell\",\"lockable\": false}]},\"created\": 1589649951,\"modified\": 1589649941,\"loadTime\": 7,\"metadata\": []}")!!
     }
 
     @After
@@ -83,29 +91,27 @@ class ApiResponseTests {
         }
         assert(rosterResponse is Result.Success)
         val rosterEntries = (rosterResponse as Result.Success).value.rosterEntries
-        val testLocomotives = testRoster.get("locomotives").asJsonArray
-        assertEquals(rosterEntries.size, testLocomotives.size())
-        for (i in 0 until testLocomotives.size()){
-            val testLocomotive = testLocomotives.get(i).asJsonObject
-            assertEquals(rosterEntries[i].id, testLocomotive.get("id").asString)
-            assertEquals(rosterEntries[i].id, testLocomotive.get("id").asString)
-            assertEquals(rosterEntries[i].dccAddress, testLocomotive.get("dccAddress").asString)
-            assertEquals(rosterEntries[i].number, testLocomotive.get("number").asString)
-            assertEquals(rosterEntries[i].name, testLocomotive.get("name").asString)
-            assertEquals(rosterEntries[i].manufacturer, testLocomotive.get("manufacturer").asString)
-            assertEquals(rosterEntries[i].model, testLocomotive.get("model").asString)
-            assertEquals(rosterEntries[i].owner, testLocomotive.get("owner").asString)
-            assertEquals(rosterEntries[i].comment, testLocomotive.get("comment").asString)
-            val testRosterEntryHasFunctions = testLocomotive.has("functions") && testLocomotive.get("functions").asJsonArray.size() > 0
+        assertEquals(rosterEntries.size, testRoster.rosterEntries.size)
+        for (i in testRoster.rosterEntries.indices){
+            val testLocomotive = testRoster.rosterEntries[i]
+            assertEquals(rosterEntries[i].id, testLocomotive.id)
+            assertEquals(rosterEntries[i].dccAddress, testLocomotive.dccAddress)
+            assertEquals(rosterEntries[i].number, testLocomotive.number)
+            assertEquals(rosterEntries[i].name, testLocomotive.name)
+            assertEquals(rosterEntries[i].manufacturer, testLocomotive.manufacturer)
+            assertEquals(rosterEntries[i].model, testLocomotive.model)
+            assertEquals(rosterEntries[i].owner, testLocomotive.owner)
+            assertEquals(rosterEntries[i].comment, testLocomotive.comment)
+            val testRosterEntryHasFunctions = testLocomotive.hasFunctions() && testLocomotive.getFunctionCount() > 0
             assertEquals(rosterEntries[i].hasFunctions(), testRosterEntryHasFunctions)
             if (testRosterEntryHasFunctions) {
-                assertEquals(rosterEntries[i].getFunctionCount(), testLocomotive.get("functions").asJsonArray.size())
-                val testLocomotiveFunctions = testLocomotive.get("functions").asJsonArray
-                for (j in 0 until testLocomotiveFunctions.size()){
-                    val function = testLocomotiveFunctions.get(j).asJsonObject
-                    assertEquals(rosterEntries[i].functions[j].number, function.get("number").asInt)
-                    assertEquals(rosterEntries[i].functions[j].name, function.get("name").asString)
-                    assertEquals(rosterEntries[i].functions[j].lockable, function.get("lockable").asBoolean)
+                assertEquals(rosterEntries[i].getFunctionCount(), testLocomotive.getFunctionCount())
+                val testLocomotiveFunctions = testLocomotive.functions
+                for (j in testLocomotiveFunctions.indices){
+                    val function = testLocomotiveFunctions[j]
+                    assertEquals(rosterEntries[i].functions[j].number, function.number)
+                    assertEquals(rosterEntries[i].functions[j].name, function.name)
+                    assertEquals(rosterEntries[i].functions[j].lockable, function.lockable)
                 }
             }
         }
@@ -131,31 +137,31 @@ class ApiResponseTests {
     @Test
     fun testRosterEntry() {
         // Extract the values we will test against from the master locomotive JsonObject.
-        val locomotive123 = testRosterEntry.get("locomotive").asJsonObject
-        val locomotive123Functions = locomotive123.get("functions").asJsonArray
+        val locomotive123 = testRosterEntry.rosterEntry
+        val locomotive123Functions = locomotive123.functions
 
         val rosterEntryResponse = runBlocking {
             rosterApi.getRosterEntry("123")
         }
         assert(rosterEntryResponse is Result.Success)
         val rosterEntry = (rosterEntryResponse as Result.Success).value.rosterEntry
-        assertEquals(rosterEntry.id, locomotive123.get("id").asString)
-        assertEquals(rosterEntry.dccAddress, locomotive123.get("dccAddress").asString)
-        assertEquals(rosterEntry.number, locomotive123.get("number").asString)
-        assertEquals(rosterEntry.name, locomotive123.get("name").asString)
-        assertEquals(rosterEntry.manufacturer, locomotive123.get("manufacturer").asString)
-        assertEquals(rosterEntry.model, locomotive123.get("model").asString)
-        assertEquals(rosterEntry.owner, locomotive123.get("owner").asString)
-        assertEquals(rosterEntry.comment, locomotive123.get("comment").asString)
-        val testRosterEntryHasFunctions = locomotive123.has("functions") && locomotive123.get("functions").asJsonArray.size() > 0
+        assertEquals(rosterEntry.id, locomotive123.id)
+        assertEquals(rosterEntry.dccAddress, locomotive123.dccAddress)
+        assertEquals(rosterEntry.number, locomotive123.number)
+        assertEquals(rosterEntry.name, locomotive123.name)
+        assertEquals(rosterEntry.manufacturer, locomotive123.manufacturer)
+        assertEquals(rosterEntry.model, locomotive123.model)
+        assertEquals(rosterEntry.owner, locomotive123.owner)
+        assertEquals(rosterEntry.comment, locomotive123.comment)
+        val testRosterEntryHasFunctions = locomotive123.hasFunctions() && locomotive123.getFunctionCount() > 0
         assertEquals(rosterEntry.hasFunctions(), testRosterEntryHasFunctions)
         if (testRosterEntryHasFunctions) {
-            assertEquals(rosterEntry.getFunctionCount(), locomotive123.get("functions").asJsonArray.size())
-            for (i in 0 until locomotive123Functions.size()) {
-                val function = locomotive123Functions.get(i).asJsonObject
-                assertEquals(rosterEntry.functions[i].number, function.get("number").asInt)
-                assertEquals(rosterEntry.functions[i].name, function.get("name").asString)
-                assertEquals(rosterEntry.functions[i].lockable, function.get("lockable").asBoolean)
+            assertEquals(rosterEntry.getFunctionCount(), locomotive123.getFunctionCount())
+            for (i in locomotive123Functions.indices) {
+                val function = locomotive123Functions[i]
+                assertEquals(rosterEntry.functions[i].number, function.number)
+                assertEquals(rosterEntry.functions[i].name, function.name)
+                assertEquals(rosterEntry.functions[i].lockable, function.lockable)
             }
         }
     }

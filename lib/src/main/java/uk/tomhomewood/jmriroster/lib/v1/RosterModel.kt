@@ -1,35 +1,35 @@
 package uk.tomhomewood.jmriroster.lib.v1
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 data class RosterResponse(
-    @SerializedName("locomotives")
+    @field:Json(name = "locomotives")
     val rosterEntries: List<RosterEntry>
 )
 
 data class RosterEntryResponse(
-    @SerializedName("locomotive")
+    @field:Json(name = "locomotive")
     val rosterEntry: RosterEntry
 )
 
 data class RosterEntry(
-    @SerializedName("id")
+    @field:Json(name = "id")
     val id: String,
-    @SerializedName("dccAddress")
+    @field:Json(name = "dccAddress")
     val dccAddress: String,
-    @SerializedName("number")
+    @field:Json(name = "number")
     val number: String,
-    @SerializedName("name")
+    @field:Json(name = "name")
     val name: String,
-    @SerializedName("manufacturer")
+    @field:Json(name = "manufacturer")
     val manufacturer: String,
-    @SerializedName("model")
+    @field:Json(name = "model")
     val model: String,
-    @SerializedName("owner")
+    @field:Json(name = "owner")
     val owner: String,
-    @SerializedName("comment")
+    @field:Json(name = "comment")
     val comment: String,
-    @SerializedName("functions")
+    @field:Json(name = "functions")
     val functions: List<Function>
 ){
     fun getFunctionCount(): Int{
@@ -42,10 +42,10 @@ data class RosterEntry(
 }
 
 data class Function(
-    @SerializedName("number")
+    @field:Json(name = "number")
     val number: Int,
-    @SerializedName("name")
+    @field:Json(name = "name")
     val name: String,
-    @SerializedName("lockable")
+    @field:Json(name = "lockable")
     val lockable: Boolean
 )

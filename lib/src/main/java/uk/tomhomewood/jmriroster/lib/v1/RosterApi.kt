@@ -1,12 +1,11 @@
 package uk.tomhomewood.jmriroster.lib.v1
 
-import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.IOException
 
 const val ERROR_CODE_NOT_SET = -1
@@ -22,7 +21,8 @@ class RosterApi(baseUrl: String, private val dispatcher: CoroutineDispatcher = D
 
     private var roster: Roster = Retrofit.Builder()
         .baseUrl(baseUrl)
-        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
+//        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
+        .addConverterFactory(MoshiConverterFactory.create())
         .build()
         .create(Roster::class.java)
 
