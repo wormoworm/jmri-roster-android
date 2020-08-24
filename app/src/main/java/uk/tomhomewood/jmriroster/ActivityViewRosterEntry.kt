@@ -1,6 +1,7 @@
 package uk.tomhomewood.jmriroster
 
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.RectF
 import android.os.Bundle
 import android.util.Log
@@ -27,7 +28,7 @@ class ActivityViewRosterEntry : AppCompatActivity() {
         const val EXTRA_ROSTER_ID: String = "rosterId"
     }
 
-    lateinit var toolbarLayout: CollapsingToolbarLayout
+    private lateinit var toolbarLayout: CollapsingToolbarLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +44,7 @@ class ActivityViewRosterEntry : AppCompatActivity() {
                     rosterEntry -> bindRosterEntry(rosterEntry)
             })
             toolbarLayout = findViewById(R.id.toolbar_layout)
-            RosterImageLoader.get(this, BuildConfig.ROSTER_API_URL).loadRosterEntryImage(rosterId, 1000, findViewById(R.id.image), transition = PaletteTransition(region = RectF(0.1F, 0.1F, 0.9F, 0.9F)){ palette -> applyPaletteForRosterEntry(palette) })
+            RosterImageLoader.get(this, BuildConfig.ROSTER_API_URL).loadRosterEntryImage(rosterId, 1000, findViewById(R.id.image), transition = if (BuildConfig.USE_PALETTE) PaletteTransition(region = RectF(0.1F, 0.1F, 0.9F, 0.9F)){ palette -> applyPaletteForRosterEntry(palette) } else null)
         }
     }
 
@@ -64,7 +65,7 @@ class ActivityViewRosterEntry : AppCompatActivity() {
             findViewById<ViewGroup>(R.id.palette_demo).visibility = View.VISIBLE
             findViewById<TextView>(R.id.palette_demo_light_vibrant).setBackgroundColor(palette.getLightVibrantColor(0))
             findViewById<TextView>(R.id.palette_demo_vibrant).setBackgroundColor(palette.getVibrantColor(0))
-            findViewById<TextView>(R.id.palette_demo_dark_vibrant).setBackgroundColor(palette.getDarkVibrantColor(0))
+            findViewById<TextView>(R.id.palette_demo_dark_vibrant).setBackgroundColor(palette.getDarkVibrantColor(Color.RED))
             findViewById<TextView>(R.id.palette_demo_light_muted).setBackgroundColor(palette.getLightMutedColor(0))
             findViewById<TextView>(R.id.palette_demo_muted).setBackgroundColor(palette.getMutedColor(0))
             findViewById<TextView>(R.id.palette_demo_dark_muted).setBackgroundColor(palette.getDarkMutedColor(0))

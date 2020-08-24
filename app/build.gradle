@@ -31,6 +31,8 @@ android {
         versionName getVersionName()
 
         buildConfigField "String", "ROSTER_API_URL", "\"https://roster.tomstrains.co.uk/api/\""
+        buildConfigField "Boolean", "STRICT_MODE", "true"
+        buildConfigField "Boolean", "USE_PALETTE", "true"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
