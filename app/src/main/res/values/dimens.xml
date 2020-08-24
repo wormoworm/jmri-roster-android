@@ -7,4 +7,5 @@
     <dimen name="margin_vertical_small">4dp</dimen>
     <dimen name="margin_vertical_medium">8dp</dimen>
     <dimen name="margin_vertical_large">16dp</dimen>
+    <dimen name="collapsing_toolbar_expanded_content_scrim_height">100dp</dimen>
 </resources>

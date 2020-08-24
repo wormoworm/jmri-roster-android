@@ -7,12 +7,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="TextAppearance.Design.CollapsingToolbar.Expanded.Shadow">
-        <item name="android:shadowDy">0</item>
-        <item name="android:shadowDx">0</item>
+    <style name="TextAppearance.Design.CollapsingToolbar.Expanded.Light">
         <item name="android:textColor">@color/white</item>
-        <item name="android:shadowRadius">36</item>
-        <item name="android:shadowColor">@color/black</item>
     </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">

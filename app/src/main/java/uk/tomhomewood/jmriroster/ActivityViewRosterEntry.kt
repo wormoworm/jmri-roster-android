@@ -71,6 +71,7 @@ class ActivityViewRosterEntry : AppCompatActivity() {
             findViewById<TextView>(R.id.palette_demo_dark_muted).setBackgroundColor(palette.getDarkMutedColor(0))
         }
         toolbarLayout.setContentScrimColor(palette.darkVibrantSwatch?.rgb ?: palette.vibrantSwatch?.rgb ?: ContextCompat.getColor(this, R.color.colorPrimary))
+        window.statusBarColor = palette.darkVibrantSwatch?.rgb ?: palette.vibrantSwatch?.rgb ?: ContextCompat.getColor(this, R.color.colorPrimaryDark)
 
 //        testView.post(Runnable {  testView.setTextColor(palette.getVibrantColor(0))})
     }
