@@ -18,26 +18,30 @@ data class RosterEntry(
     @field:Json(name = "dccAddress")
     val dccAddress: String,
     @field:Json(name = "number")
-    val number: String,
+    val number: String?,
     @field:Json(name = "name")
-    val name: String,
+    val name: String?,
     @field:Json(name = "manufacturer")
-    val manufacturer: String,
+    val manufacturer: String?,
     @field:Json(name = "model")
-    val model: String,
+    val model: String?,
     @field:Json(name = "owner")
-    val owner: String,
+    val owner: String?,
     @field:Json(name = "comment")
-    val comment: String,
+    val comment: String?,
     @field:Json(name = "functions")
-    val functions: List<Function>
+    val functions: List<Function> = ArrayList()
 ){
-    fun getFunctionCount(): Int{
+    fun getFunctionCount(): Int {
         return functions?.size ?: 0
     }
 
-    fun hasFunctions(): Boolean{
-        return functions != null && functions.isNotEmpty()
+    fun hasName(): Boolean {
+        return name !=null && name.isNotEmpty()
+    }
+
+    fun hasFunctions(): Boolean {
+        return functions.isNotEmpty()
     }
 }
 
