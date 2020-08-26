@@ -30,18 +30,18 @@ data class RosterEntry(
     @field:Json(name = "comment")
     val comment: String?,
     @field:Json(name = "functions")
-    val functions: List<Function> = ArrayList()
+    val functions: List<Function>? = ArrayList()
 ){
-    fun getFunctionCount(): Int {
-        return functions?.size ?: 0
-    }
-
     fun hasName(): Boolean {
         return name !=null && name.isNotEmpty()
     }
 
+    fun getFunctionCount(): Int {
+        return functions?.size ?: 0
+    }
+
     fun hasFunctions(): Boolean {
-        return functions.isNotEmpty()
+        return getFunctionCount() > 0
     }
 }
 

@@ -105,12 +105,20 @@ class ApiResponseTests {
             assertEquals(rosterEntries[i].hasFunctions(), testRosterEntryHasFunctions)
             if (testRosterEntryHasFunctions) {
                 assertEquals(rosterEntries[i].getFunctionCount(), testLocomotive.getFunctionCount())
-                val testLocomotiveFunctions = testLocomotive.functions
-                for (j in testLocomotiveFunctions.indices){
-                    val function = testLocomotiveFunctions[j]
-                    assertEquals(rosterEntries[i].functions[j].number, function.number)
-                    assertEquals(rosterEntries[i].functions[j].name, function.name)
-                    assertEquals(rosterEntries[i].functions[j].lockable, function.lockable)
+                testLocomotive.functions?.let {
+                    testLocomotiveFunctions -> {
+                        for (j in testLocomotiveFunctions.indices){
+                            val testFunction = testLocomotiveFunctions[j]
+                            rosterEntries[i].functions?.let {
+                                functions -> {
+                                    val function = functions[j]
+                                    assertEquals(function.number, testFunction.number)
+                                    assertEquals(function.name, testFunction.name)
+                                    assertEquals(function.lockable, testFunction.lockable)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -137,7 +145,6 @@ class ApiResponseTests {
     fun testRosterEntry() {
         // Extract the values we will test against from the master locomotive JsonObject.
         val locomotive123 = testRosterEntry.rosterEntry
-        val locomotive123Functions = locomotive123.functions
 
         val rosterEntryResponse = runBlocking {
             rosterApi.getRosterEntry("123")
@@ -156,11 +163,20 @@ class ApiResponseTests {
         assertEquals(rosterEntry.hasFunctions(), testRosterEntryHasFunctions)
         if (testRosterEntryHasFunctions) {
             assertEquals(rosterEntry.getFunctionCount(), locomotive123.getFunctionCount())
-            for (i in locomotive123Functions.indices) {
-                val function = locomotive123Functions[i]
-                assertEquals(rosterEntry.functions[i].number, function.number)
-                assertEquals(rosterEntry.functions[i].name, function.name)
-                assertEquals(rosterEntry.functions[i].lockable, function.lockable)
+            locomotive123.functions?.let {
+                testLocomotiveFunctions -> {
+                    for (j in testLocomotiveFunctions.indices){
+                        val testFunction = testLocomotiveFunctions[j]
+                        rosterEntry.functions?.let {
+                                functions -> {
+                                val function = functions[j]
+                                assertEquals(function.number, testFunction.number)
+                                assertEquals(function.name, testFunction.name)
+                                assertEquals(function.lockable, testFunction.lockable)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
