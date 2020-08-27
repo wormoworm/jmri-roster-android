@@ -132,12 +132,15 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/block_basic_info"
                 style="@style/ContentBlock.Vertical"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/block_basic_info_title"
                     style="@style/ContentBlockTitle"
-                    android:text="@string/title_locomotive_info" />
+                    android:text="@string/title_locomotive_info"
+                    tools:textColor="#275938" />
 
                 <TextView
                     style="@style/FieldLabel"
@@ -145,9 +148,7 @@
 
                 <TextView
                     android:id="@+id/name"
-                    style="@style/TextAppearance.AppCompat.Headline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/Field"
                     tools:text="Stephenson Locomotive Society 1909 - 2009" />
 
                 <TextView
@@ -156,13 +157,30 @@
 
                 <TextView
                     android:id="@+id/address"
-                    style="@style/TextAppearance.AppCompat.Headline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/Field"
                     tools:text="6957" />
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/block_comments"
+                style="@style/ContentBlock.Vertical"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/block_comments_title"
+                    style="@style/ContentBlockTitle"
+                    android:text="@string/title_comments"
+                    tools:textColor="#275938" />
+
+                <TextView
+                    android:id="@+id/comments"
+                    style="@style/Field"
+                    tools:text="Test comment: 21 Pin ESU LokSound V5 decoder fitted.\n5-pole motor driving all wheels with all wheel pickup.\n\nRotating axleboxes, etched metal grilles, etched nameplates (where appropriate), extensive underframe and bogie detail." />
+
+            </LinearLayout>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

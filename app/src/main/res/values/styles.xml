@@ -19,22 +19,23 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="ContentBlockTitle" parent="TextAppearance.AppCompat.Subhead">
+    <style name="ContentBlockTitle" parent="TextAppearance.AppCompat.Title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/margin_vertical_medium</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="Field" parent="TextAppearance.AppCompat.Headline">
+    <style name="Field" parent="TextAppearance.AppCompat.Body2">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/margin_vertical_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_vertical_medium</item>
     </style>
 
     <style name="FieldLabel" parent="TextAppearance.AppCompat.Body1">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/margin_vertical_large</item>
+        <item name="android:layout_marginBottom">@dimen/margin_vertical_very_small</item>
     </style>
 
     <style name="ContentBlock">

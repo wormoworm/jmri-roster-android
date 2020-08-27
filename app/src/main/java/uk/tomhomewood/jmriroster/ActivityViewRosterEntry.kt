@@ -30,6 +30,8 @@ class ActivityViewRosterEntry : AppCompatActivity() {
 
     private lateinit var toolbarLayout: CollapsingToolbarLayout
 
+    private val contentBlockHeadingIds = arrayOf(R.id.block_basic_info_title, R.id.block_comments_title)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_roster_entry)
@@ -56,6 +58,10 @@ class ActivityViewRosterEntry : AppCompatActivity() {
         toolbar.title = rosterEntry.number
         findViewById<TextView>(R.id.name).text = rosterEntry.name
         findViewById<TextView>(R.id.address).text = rosterEntry.dccAddress
+        rosterEntry.comment?.let {
+            findViewById<ViewGroup>(R.id.block_comments).visibility = View.VISIBLE
+            findViewById<TextView>(R.id.comments).text = it
+        }
     }
 
     private fun applyPaletteForRosterEntry(palette: Palette) {
@@ -69,9 +75,13 @@ class ActivityViewRosterEntry : AppCompatActivity() {
             findViewById<TextView>(R.id.palette_demo_muted).setBackgroundColor(palette.getMutedColor(0))
             findViewById<TextView>(R.id.palette_demo_dark_muted).setBackgroundColor(palette.getDarkMutedColor(0))
         }
-        toolbarLayout.setContentScrimColor(palette.darkVibrantSwatch?.rgb ?: palette.vibrantSwatch?.rgb ?: ContextCompat.getColor(this, R.color.colorPrimary))
-        window.statusBarColor = palette.darkVibrantSwatch?.rgb ?: palette.vibrantSwatch?.rgb ?: ContextCompat.getColor(this, R.color.colorPrimaryDark)
+        val primaryPaletteColour = palette.darkVibrantSwatch?.rgb ?: palette.vibrantSwatch?.rgb ?: ContextCompat.getColor(this, R.color.colorPrimary)
+        toolbarLayout.setContentScrimColor(primaryPaletteColour)
+        window.statusBarColor = primaryPaletteColour
 
+        contentBlockHeadingIds.forEach {
+            findViewById<TextView>(it).setTextColor(primaryPaletteColour)
+        }
 //        testView.post(Runnable {  testView.setTextColor(palette.getVibrantColor(0))})
     }
 

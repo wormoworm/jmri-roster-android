@@ -5,4 +5,5 @@
     <string name="label_roster_entry_address">DCC address</string>
     <string name="label_dcc">dcc</string>
     <string name="title_locomotive_info">Locomotive info</string>
+    <string name="title_comments">Comments</string>
 </resources>

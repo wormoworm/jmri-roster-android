@@ -4,6 +4,7 @@
     <dimen name="margin_horizontal_small">8dp</dimen>
     <dimen name="margin_horizontal_medium">16dp</dimen>
     <dimen name="margin_horizontal_large">24dp</dimen>
+    <dimen name="margin_vertical_very_small">2dp</dimen>
     <dimen name="margin_vertical_small">4dp</dimen>
     <dimen name="margin_vertical_medium">8dp</dimen>
     <dimen name="margin_vertical_large">16dp</dimen>
