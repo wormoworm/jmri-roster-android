@@ -45,7 +45,8 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="?attr/homeAsUpIndicator"
-                app:theme="@style/ToolbarTheme" />
+                app:theme="@style/ToolbarTheme"
+                tools:title="66957" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -130,47 +131,37 @@
 
             </LinearLayout>
 
-            <TextView
-                style="@style/TextAppearance.AppCompat.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="400dp"
-                android:text="@string/label_roster_entry_number" />
+            <LinearLayout
+                style="@style/ContentBlock.Vertical"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/number"
-                style="@style/TextAppearance.AppCompat.Display1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="66957" />
+                <TextView
+                    style="@style/ContentBlockTitle"
+                    android:text="@string/title_locomotive_info" />
 
-            <TextView
-                style="@style/TextAppearance.AppCompat.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="400dp"
-                android:text="@string/label_roster_entry_name" />
+                <TextView
+                    style="@style/FieldLabel"
+                    android:text="@string/label_roster_entry_name" />
 
-            <TextView
-                android:id="@+id/name"
-                style="@style/TextAppearance.AppCompat.Display1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Stephenson Locomotive Society 1909 - 2009" />
+                <TextView
+                    android:id="@+id/name"
+                    style="@style/TextAppearance.AppCompat.Headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Stephenson Locomotive Society 1909 - 2009" />
 
-            <TextView
-                style="@style/TextAppearance.AppCompat.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="400dp"
-                android:text="@string/label_roster_entry_address" />
+                <TextView
+                    style="@style/FieldLabel"
+                    android:text="@string/label_roster_entry_address" />
 
-            <TextView
-                android:id="@+id/address"
-                style="@style/TextAppearance.AppCompat.Display1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="6957" />
+                <TextView
+                    android:id="@+id/address"
+                    style="@style/TextAppearance.AppCompat.Headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="6957" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

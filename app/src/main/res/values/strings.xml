@@ -2,6 +2,7 @@
     <string name="app_name">JMRI Roster</string>
     <string name="label_roster_entry_number">Number</string>
     <string name="label_roster_entry_name">Name</string>
-    <string name="label_roster_entry_address">Address</string>
+    <string name="label_roster_entry_address">DCC address</string>
     <string name="label_dcc">dcc</string>
+    <string name="title_locomotive_info">Locomotive info</string>
 </resources>

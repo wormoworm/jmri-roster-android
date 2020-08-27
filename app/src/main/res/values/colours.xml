@@ -5,12 +5,16 @@
     <color name="colorAccent">#207360</color>
 
     <color name="transparent">#00000000</color>
-    <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="light_grey">#EEEEEE</color>
+    <color name="light_medium_grey">#CCCCCC</color>
+    <color name="dark_grey">#111111</color>
+    <color name="black">#000000</color>
 
     <color name="item_background">@color/light_grey</color>
     <color name="background">@color/white</color>
     <color name="scrim_start">#CC000000</color>
     <color name="scrim_end">@color/transparent</color>
+    <color name="content_block_border">@color/light_medium_grey</color>
+    <color name="content_block_background">@color/light_grey</color>
 </resources>

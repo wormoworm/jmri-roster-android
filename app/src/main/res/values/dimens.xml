@@ -8,4 +8,5 @@
     <dimen name="margin_vertical_medium">8dp</dimen>
     <dimen name="margin_vertical_large">16dp</dimen>
     <dimen name="collapsing_toolbar_expanded_content_scrim_height">100dp</dimen>
+    <dimen name="content_block_border_width">1dp</dimen>
 </resources>
