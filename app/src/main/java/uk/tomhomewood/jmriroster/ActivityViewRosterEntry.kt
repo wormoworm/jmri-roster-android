@@ -56,7 +56,11 @@ class ActivityViewRosterEntry : AppCompatActivity() {
 
     private fun bindRosterEntry(rosterEntry: RosterEntry) {
         toolbar.title = rosterEntry.number
-        findViewById<TextView>(R.id.name).text = rosterEntry.name
+        rosterEntry.name?.let {
+            findViewById<TextView>(R.id.name_label).visibility = View.VISIBLE
+            findViewById<TextView>(R.id.name).visibility = View.VISIBLE
+            findViewById<TextView>(R.id.name).text = it
+        }
         findViewById<TextView>(R.id.address).text = rosterEntry.dccAddress
         rosterEntry.comment?.let {
             findViewById<ViewGroup>(R.id.block_comments).visibility = View.VISIBLE
@@ -82,7 +86,6 @@ class ActivityViewRosterEntry : AppCompatActivity() {
         contentBlockHeadingIds.forEach {
             findViewById<TextView>(it).setTextColor(primaryPaletteColour)
         }
-//        testView.post(Runnable {  testView.setTextColor(palette.getVibrantColor(0))})
     }
 
     private fun showColourPalette(): Boolean {

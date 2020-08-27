@@ -14,10 +14,12 @@ class JmriRosterApplication: Application() {
                 .detectAll()
                 .penaltyLog()
                 .build())
-            StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
-                .detectNonSdkApiUsage()
+            val vmPolicyBuilder = StrictMode.VmPolicy.Builder()
                 .penaltyLog()
-                .build())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                vmPolicyBuilder.detectNonSdkApiUsage()
+            }
+            StrictMode.setVmPolicy(vmPolicyBuilder.build())
         }
         super.onCreate()
     }
