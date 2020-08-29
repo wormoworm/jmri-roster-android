@@ -5,12 +5,17 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.0002699">
+      <testcase classname="fastlane.lanes" name="0: opt_out_usage" time="0.0003006">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: lib:test" time="3.4921996">
+      <testcase classname="fastlane.lanes" name="1: default_platform" time="0.0002156">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: app:bundleRelease" time="9.5122287">
         
       </testcase>
     

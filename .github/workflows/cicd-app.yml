@@ -13,12 +13,14 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
-      - name: set up JDK 1.8
+      - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
       - name: Run unit tests
-        run: bash ./gradlew app:test --stacktrace
+        uses: maierj/fastlane-action@v1.4.0
+        with:
+          lane: 'android app_test'
 
   publish_app:
     name: Publish app
@@ -27,7 +29,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '#skip-app-publish')"
     steps:
       - uses: actions/checkout@v1
-      - name: set up JDK 1.8
+      - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
@@ -35,20 +37,34 @@ jobs:
         run: echo '${{ secrets.RELEASE_KEYSTORE }}' | base64 -d > $ORG_GRADLE_PROJECT_keystorepath
         env:
           ORG_GRADLE_PROJECT_keystorepath: ${{ github.workspace }}/release.jks
-      - name: Assemble app bundle
-        run: bash ./gradlew app:bundleRelease -P versionPatch=${{ github.run_number }}
-        env:
-          ORG_GRADLE_PROJECT_keystorepath: ${{ github.workspace }}/release.jks
-          ORG_GRADLE_PROJECT_keystorepassword: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
-          ORG_GRADLE_PROJECT_keypasswordjmriroster: ${{ secrets.RELEASE_KEYSTORE_ALIAS_JMRI_ROSTER_PASSWORD }}
       - name: Deploy service_account.json
         run: echo '${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}' > ${{ github.workspace }}/service_account.json
-      - name: Publish app to Google Play alpha channel
-        uses: r0adkll/upload-google-play@v1.0.4
+          ###
+
+      - name: Build and publish app
+        uses: maierj/fastlane-action@v1.4.0
         with:
-          serviceAccountJson: ${{ github.workspace }}/service_account.json
-          packageName: uk.tomhomewood.jmriroster
-          releaseFile: ${{ github.workspace }}/app/build/outputs/bundle/release/app-release.aab
-          track: alpha
-          whatsNewDirectory: ${{ github.workspace }}/app/app-release-notes
-#          mappingFile: ${{ github.workspace }}/app/build/outputs/mapping/release/mapping.txt
+          lane: 'android app_publish'
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
+          KEYSTORE_PATH: ${{ github.workspace }}/release.jks
+          KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          KEYSTORE_PASSWORD_JMRI_ROSTER: ${{ secrets.RELEASE_KEYSTORE_ALIAS_JMRI_ROSTER_PASSWORD }}
+          AAB_PATH: ${{ github.workspace }}/app/build/outputs/bundle/release/app-release.aab
+
+#       - name: Assemble app bundle
+#         run: bash ./gradlew app:bundleRelease -P versionPatch=${{ github.run_number }}
+#         env:
+#           ORG_GRADLE_PROJECT_keystorepath: ${{ github.workspace }}/release.jks
+#           ORG_GRADLE_PROJECT_keystorepassword: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+#           ORG_GRADLE_PROJECT_keypasswordjmriroster: ${{ secrets.RELEASE_KEYSTORE_ALIAS_JMRI_ROSTER_PASSWORD }}
+      
+#       - name: Publish app to Google Play alpha channel
+#         uses: r0adkll/upload-google-play@v1.0.4
+#         with:
+#           serviceAccountJson: ${{ github.workspace }}/service_account.json
+#           packageName: uk.tomhomewood.jmriroster
+#           releaseFile: ${{ github.workspace }}/app/build/outputs/bundle/release/app-release.aab
+#           track: alpha
+#           whatsNewDirectory: ${{ github.workspace }}/app/app-release-notes
+# #          mappingFile: ${{ github.workspace }}/app/build/outputs/mapping/release/mapping.txt

@@ -21,6 +21,11 @@ or alternatively using `brew install fastlane`
 fastlane android app_test
 ```
 Test app
+### android app_publish
+```
+fastlane android app_publish
+```
+Publish app
 ### android lib_test
 ```
 fastlane android lib_test
