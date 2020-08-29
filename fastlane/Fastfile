@@ -15,14 +15,30 @@
 
 default_platform(:android)
 
-platform :android_app do
+platform :android do
   desc "Test app"
-  lane :test do
+  lane :app_test do
     gradle(
-      task: "app:test")
+      task: "app:test"
+    )
   end
 
+  desc "Test lib"
+  lane :lib_test do
+    gradle(
+      task: "lib:test"
+    )
+  end
 
-
-
+  desc "Publish lib artifact"
+  lane :lib_publish do
+    gradle(
+      task: "lib:publishReleasePublicationToGithubPackagesRepository",
+      properties: {
+        "versionPatch" => ENV["BUILD_NUMBER"],
+        "githubuser" => ENV["GITHUB_USER"],
+        "githubtoken" => ENV["GITHUB_TOKEN"]
+      }
+    )
+  end
 end

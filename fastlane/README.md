@@ -15,12 +15,22 @@ Install _fastlane_ using
 or alternatively using `brew install fastlane`
 
 # Available Actions
-## android_app
-### android_app test
+## Android
+### android app_test
 ```
-fastlane android_app test
+fastlane android app_test
 ```
 Test app
+### android lib_test
+```
+fastlane android lib_test
+```
+Test lib
+### android lib_publish
+```
+fastlane android lib_publish
+```
+Publish lib artifact
 
 ----
 
