@@ -17,8 +17,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - uses: maierj/fastlane-action@v1.4.0
       - name: Run unit tests
+        uses: maierj/fastlane-action@v1.4.0
         with:
           lane: 'android lib_test'
   publish_lib:
