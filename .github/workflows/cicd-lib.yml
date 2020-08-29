@@ -18,8 +18,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: List dir
-        run: ls -al
       - name: Run unit tests
         uses: maierj/fastlane-action@v1.4.0
         with:
