@@ -30,12 +30,15 @@ jobs:
     if: "!contains(github.event.head_commit.message, '#skip-lib-publish')"
     steps:
       - uses: actions/checkout@v1
-      - name: set up JDK 1.8
+      - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
       - name: Publish artifact
-        run: bash ./gradlew lib:publishReleasePublicationToGithubPackagesRepository -P versionPatch=${{ github.run_number }}
+        uses: maierj/fastlane-action@v1.4.0
+        with:
+          lane: 'android lib_publish'
         env:
-          ORG_GRADLE_PROJECT_githubuser: ${{ secrets.GH_USER }}
-          ORG_GRADLE_PROJECT_githubtoken: ${{ secrets.GH_TOKEN }}
+          BUILD_NUMBER: ${{ github.run_number }}
+          GITHUB_USER: ${{ secrets.GH_USER }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
