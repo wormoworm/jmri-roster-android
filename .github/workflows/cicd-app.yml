@@ -6,6 +6,7 @@ on:
       - 'master'
     paths:
       - 'app/**'
+      - '.github/workflows/cicd-app.yml'
 
 jobs:
   test_app:
