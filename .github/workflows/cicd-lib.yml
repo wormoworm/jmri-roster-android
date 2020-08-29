@@ -18,8 +18,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Make gradlew executable
-        run: bash chmod 777 gradlew
+      - name: List dir
+        run: ls -al
       - name: Run unit tests
         uses: maierj/fastlane-action@v1.4.0
         with:
