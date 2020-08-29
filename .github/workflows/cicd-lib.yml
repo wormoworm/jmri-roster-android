@@ -22,7 +22,7 @@ jobs:
         uses: maierj/fastlane-action@v1.4.0
         with:
           lane: 'android lib_test'
-          bundle-install-path: 'vendor/bundle'
+
   publish_lib:
     name: Publish lib artifact
     runs-on: ubuntu-18.04

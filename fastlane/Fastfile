@@ -26,7 +26,8 @@ platform :android do
   desc "Test lib"
   lane :lib_test do
     gradle(
-      task: "lib:test"
+      task: "lib:test",
+      project_dir: './android'
     )
   end
 
