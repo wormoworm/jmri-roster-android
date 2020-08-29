@@ -6,6 +6,7 @@ on:
       - 'master'
     paths:
       - 'lib/**'
+      - '.github/workflows/cicd-lib.yml'
 
 jobs:
   test_lib:
