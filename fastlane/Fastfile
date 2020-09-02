@@ -16,6 +16,15 @@ platform :android do
   desc "Publish app"
   lane :app_publish do
     gradle(
+      task: "app:assemble",
+      build_type: 'Debug'
+    )
+    gradle(
+      task: "app:assemble",
+      build_type: 'AndroidTest'
+    )
+    screengrab
+    gradle(
       task: "app:bundleRelease",
       properties: {
         "versionPatch" => ENV["BUILD_NUMBER"],

@@ -1,12 +1,19 @@
 package uk.tomhomewood.jmriroster
 
-import androidx.test.platform.app.InstrumentationRegistry
+import android.R
+import androidx.lifecycle.Lifecycle
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
+import androidx.test.platform.app.InstrumentationRegistry
+import org.junit.Assert.assertEquals
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import tools.fastlane.screengrab.Screengrab
 
-import org.junit.Assert.*
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -20,5 +27,18 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("uk.tomhomewood.jmriroster", appContext.packageName)
+    }
+
+    @Rule
+    @JvmField
+    var activityRule: ActivityScenarioRule<ActivityViewRoster> = ActivityScenarioRule(ActivityViewRoster::class.java)
+
+    @Test
+    fun testTakeScreenshot() {
+        Screengrab.screenshot("test_screenshot")
+
+        // Your custom onView...
+//        onView(withId(R.id.fab)).perform(click())
+//        Screengrab.screenshot("after_button_click")
     }
 }
