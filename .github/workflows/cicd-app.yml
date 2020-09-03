@@ -48,9 +48,10 @@ jobs:
           ###
 
       - name: Build and publish app
-        uses: maierj/fastlane-action@v1.4.0
+        uses: reactivecircus/android-emulator-runner@v2
         with:
-          lane: 'android app_publish'
+          api-level: 30
+          script: fastlane android app_publish
         env:
           BUILD_NUMBER: ${{ github.run_number }}
           KEYSTORE_PATH: ${{ github.workspace }}/release.jks
@@ -58,6 +59,18 @@ jobs:
           KEYSTORE_PASSWORD_JMRI_ROSTER: ${{ secrets.RELEASE_KEYSTORE_ALIAS_JMRI_ROSTER_PASSWORD }}
           AAB_PATH: ${{ github.workspace }}/app/build/outputs/bundle/release/app-release.aab
           SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+
+      # - name: Build and publish app
+      #   uses: maierj/fastlane-action@v1.4.0
+      #   with:
+      #     lane: 'android app_publish'
+      #   env:
+      #     BUILD_NUMBER: ${{ github.run_number }}
+      #     KEYSTORE_PATH: ${{ github.workspace }}/release.jks
+      #     KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+      #     KEYSTORE_PASSWORD_JMRI_ROSTER: ${{ secrets.RELEASE_KEYSTORE_ALIAS_JMRI_ROSTER_PASSWORD }}
+      #     AAB_PATH: ${{ github.workspace }}/app/build/outputs/bundle/release/app-release.aab
+      #     SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
 
 #       - name: Assemble app bundle
 #         run: bash ./gradlew app:bundleRelease -P versionPatch=${{ github.run_number }}

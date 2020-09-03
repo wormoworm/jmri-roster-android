@@ -22,12 +22,12 @@ import tools.fastlane.screengrab.Screengrab
  */
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
-    @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("uk.tomhomewood.jmriroster", appContext.packageName)
-    }
+//    @Test
+//    fun useAppContext() {
+//        // Context of the app under test.
+//        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+//        assertEquals("uk.tomhomewood.jmriroster", appContext.packageName)
+//    }
 
     @Rule
     @JvmField
