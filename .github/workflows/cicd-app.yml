@@ -11,7 +11,7 @@ on:
 jobs:
   test_app:
     name: Test app
-    runs-on: macos-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK 1.8
@@ -22,11 +22,11 @@ jobs:
         uses: maierj/fastlane-action@v1.4.0
         with:
           lane: 'android app_test'
-      - name: run tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          script: ./gradlew connectedCheck
+      # - name: run tests
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 29
+      #     script: ./gradlew connectedCheck
 
   publish_app:
     name: Publish app
@@ -50,7 +50,7 @@ jobs:
       - name: Build and publish app
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 30
+          api-level: 29
           script: fastlane android app_publish
         env:
           BUILD_NUMBER: ${{ github.run_number }}
