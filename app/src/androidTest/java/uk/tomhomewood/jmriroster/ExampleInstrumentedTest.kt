@@ -38,7 +38,8 @@ class ExampleInstrumentedTest {
 
     @Test
     fun testTakeScreenshot() {
-        Screengrab.screenshot("test_screenshot")
+        Screengrab.screenshot("screenshot_one")
+        Screengrab.screenshot("screenshot_two")
 
         // Your custom onView...
 //        onView(withId(R.id.fab)).perform(click())
