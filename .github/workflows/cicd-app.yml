@@ -51,6 +51,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
+          target: google_apis
           script: adb root && bundle exec fastlane android app_publish
         env:
           BUILD_NUMBER: ${{ github.run_number }}
