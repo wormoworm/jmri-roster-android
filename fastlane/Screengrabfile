@@ -3,8 +3,8 @@
 # app_package_name('your.app.package')
 # use_tests_in_packages(['your.screenshot.tests.package'])
 
-# app_apk_path('path/to/your/app.apk')
-# tests_apk_path('path/to/your/tests.apk')
+app_apk_path('app/build/outputs/apk/debug/app-debug.apk')
+tests_apk_path('app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk')
 
 locales(['en-GB'])
 
