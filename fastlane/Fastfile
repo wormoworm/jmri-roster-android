@@ -23,7 +23,9 @@ platform :android do
       task: "app:assemble",
       build_type: 'AndroidTest'
     )
-    screengrab
+    screengrab(
+      use_adb_root: true
+    )
     gradle(
       task: "app:bundleRelease",
       properties: {
