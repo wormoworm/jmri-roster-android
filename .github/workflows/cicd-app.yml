@@ -51,7 +51,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: fastlane android app_publish
+          script: bundle exec fastlane android app_publish
         env:
           BUILD_NUMBER: ${{ github.run_number }}
           KEYSTORE_PATH: ${{ github.workspace }}/release.jks
