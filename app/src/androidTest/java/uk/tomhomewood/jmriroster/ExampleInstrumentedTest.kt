@@ -13,6 +13,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import tools.fastlane.screengrab.Screengrab
+import tools.fastlane.screengrab.locale.LocaleTestRule
 
 
 /**
@@ -29,9 +30,11 @@ class ExampleInstrumentedTest {
 //        assertEquals("uk.tomhomewood.jmriroster", appContext.packageName)
 //    }
 
-    @Rule
-    @JvmField
+    @Rule @JvmField
     var activityRule: ActivityScenarioRule<ActivityViewRoster> = ActivityScenarioRule(ActivityViewRoster::class.java)
+
+    @Rule @JvmField
+    val localeTestRule = LocaleTestRule()
 
     @Test
     fun testTakeScreenshot() {
