@@ -1,5 +1,6 @@
 package uk.tomhomewood.jmriroster
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.RectF
@@ -26,6 +27,10 @@ class ActivityViewRosterEntry : AppCompatActivity() {
 
     companion object {
         const val EXTRA_ROSTER_ID: String = "rosterId"
+
+        fun getLaunchIntent(context: Context, rosterId: String): Intent {
+            return Intent(context, ActivityViewRosterEntry::class.java).putExtra(EXTRA_ROSTER_ID, rosterId)
+        }
     }
 
     private lateinit var toolbarLayout: CollapsingToolbarLayout
@@ -94,7 +99,7 @@ class ActivityViewRosterEntry : AppCompatActivity() {
 }
 
 fun AppCompatActivity.launchViewRosterEntryForResult(rosterId: String, launchCode: Int) {
-    this.startActivityForResult(Intent(this, ActivityViewRosterEntry::class.java).putExtra(ActivityViewRosterEntry.EXTRA_ROSTER_ID, rosterId), launchCode)
+    this.startActivityForResult(ActivityViewRosterEntry.getLaunchIntent(this, rosterId), launchCode)
 }
 
 class RosterEntryViewModelFactory(private val rosterId: String) : ViewModelProvider.Factory {

@@ -1,7 +1,6 @@
 package uk.tomhomewood.jmriroster
 
 import android.view.View
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
@@ -32,7 +31,7 @@ class TestActivityViewRoster {
 
     @Test
     fun testTakeScreenshot() {
-        onView(isRoot()).perform(waitFor(API_DELAY_MS))
+//        onView(isRoot()).perform(waitFor(API_DELAY_MS))
         Screengrab.screenshot("1_roster_list")
         Screengrab.screenshot("2_screenshot_two")
 
@@ -52,6 +51,5 @@ fun waitFor(millis: Long): ViewAction{
         override fun perform(uiController: UiController?, view: View?) {
             uiController!!.loopMainThreadForAtLeast(millis)
         }
-
     }
 }
