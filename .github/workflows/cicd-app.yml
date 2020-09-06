@@ -52,7 +52,7 @@ jobs:
         with:
           api-level: 29
           target: google_apis
-          script: bundle exec fastlane android app_publish
+          script: ./gradlew connectedCheck
         env:
           BUILD_NUMBER: ${{ github.run_number }}
           KEYSTORE_PATH: ${{ github.workspace }}/release.jks
