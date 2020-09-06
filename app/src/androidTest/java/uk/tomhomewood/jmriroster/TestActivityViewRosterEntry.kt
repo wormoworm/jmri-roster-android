@@ -23,18 +23,9 @@ import tools.fastlane.screengrab.locale.LocaleTestRule
 @RunWith(AndroidJUnit4::class)
 class TestActivityViewRosterEntry {
 
-    val rosterId: String = "66957"
+    private val rosterId: String = "66957"
 
     lateinit var activityScenario: ActivityScenario<ActivityViewRosterEntry>
-
-    @Rule @JvmField
-    var activityRule: ActivityTestRule<ActivityViewRosterEntry> =
-        object : ActivityTestRule<ActivityViewRosterEntry>(ActivityViewRosterEntry::class.java) {
-            override fun getActivityIntent(): Intent {
-                val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
-                return ActivityViewRosterEntry.getLaunchIntent(targetContext, rosterId)
-            }
-        }
 
     @Rule @JvmField
     val localeTestRule = LocaleTestRule()
