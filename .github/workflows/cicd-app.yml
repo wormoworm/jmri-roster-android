@@ -67,6 +67,7 @@ jobs:
           AAB_PATH: ${{ github.workspace }}/app/build/outputs/bundle/release/app-release.aab
           SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
 
+          
       # - name: Build and publish app
       #   uses: maierj/fastlane-action@v1.4.0
       #   with:
