@@ -46,13 +46,19 @@ jobs:
       # - name: Deploy service_account.json
       #   run: echo '${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}' > ${{ github.workspace }}/service_account.json
           ###
-
-      - name: Build and publish app
+      
+      - name: Build apks for UI tests
+        run: bundle exec fastlane android app_build_for_ui_test
+      
+      - name: Capture app screenshots
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
           target: google_apis
-          script: bundle exec fastlane android app_publish
+          script: bundle exec fastlane android app_capture_screenshots
+
+      - name: Build and publish app
+        run: bundle exec fastlane android app_publish
         env:
           BUILD_NUMBER: ${{ github.run_number }}
           KEYSTORE_PATH: ${{ github.workspace }}/release.jks

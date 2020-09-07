@@ -13,8 +13,8 @@ platform :android do
     )
   end
 
-  desc "Publish app"
-  lane :app_publish do
+  desc "Build apks for UI tests"
+  lane :app_build_for_ui_test do
     gradle(
       task: "app:assemble",
       build_type: 'Debug'
@@ -23,9 +23,17 @@ platform :android do
       task: "app:assemble",
       build_type: 'AndroidTest'
     )
+  end
+
+  desc "Capture screenshots"
+  lane :app_capture_screenshots do
     screengrab(
       use_adb_root: true
     )
+  end
+
+  desc "Publish app"
+  lane :app_publish do
     gradle(
       task: "app:bundleRelease",
       properties: {
