@@ -10,16 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.annotation.ExperimentalCoilApi
-import coil.transform.Transformation
 import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration
 import kotlinx.coroutines.launch
 import uk.tomhomewood.jmriroster.lib.v1.Result
@@ -33,7 +27,7 @@ class ActivityViewRoster : AppCompatActivity() {
 
     companion object {
         fun getLaunchIntent(context: Context): Intent {
-            return Intent(context, ActivityViewRosterEntry::class.java)
+            return Intent(context, ActivityViewRoster::class.java)
         }
     }
 
@@ -114,12 +108,15 @@ class RosterAdapter(lifecycleOwner: LifecycleOwner, private val rosterViewModel:
 
 class RosterListViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_roster_list, parent, false)) {
 
+    var rosterId: String = ""
+
     private val imageSize: Int by lazy {
         parent.resources.getDimensionPixelSize(R.dimen.roster_list_item_height)
     }
 
     @ExperimentalCoilApi
     fun bindRosterEntry(rosterEntry: RosterEntry) {
+        rosterId = rosterEntry.id
         itemView.findViewById<TextView>(R.id.number).text = rosterEntry.number
         itemView.findViewById<TextView>(R.id.name).text = rosterEntry.name
         itemView.findViewById<TextView>(R.id.address).text = rosterEntry.dccAddress
