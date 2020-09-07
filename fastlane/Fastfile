@@ -47,6 +47,7 @@ platform :android do
       track: "alpha",
       aab: ENV["AAB_PATH"],
       skip_upload_apk: true,
+      skip_upload_aab: true,
       json_key_data: ENV["SERVICE_ACCOUNT_JSON"]
     )
   end
