@@ -2,8 +2,11 @@ package uk.tomhomewood.jmriroster.screenshots
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,18 +24,21 @@ class TestActivityViewRosterEntry {
 
     private val rosterId: String = "66957"
 
-    lateinit var activityScenario: ActivityScenario<ActivityViewRosterEntry>
+    private lateinit var activityScenario: ActivityScenario<ActivityViewRosterEntry>
 
     @Rule @JvmField
     val localeTestRule = LocaleTestRule()
 
-    @Test
-    fun testTakeScreenshot() {
-//        onView(isRoot()).perform(waitFor(API_DELAY_MS))
-
+    @Before
+    fun setup() {
         activityScenario = ActivityScenario.launch(ActivityViewRosterEntry.getLaunchIntent(ApplicationProvider.getApplicationContext(), rosterId))
+    }
+
+    @Test
+    fun testTakeScreenshots() {
         activityScenario.onActivity {
-            Screengrab.screenshot("3_roster_entry")
+            Espresso.onView(ViewMatchers.isRoot()).perform(waitFor(API_DELAY_MS))
+            Screengrab.screenshot("roster_entry")
         }
     }
 

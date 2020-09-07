@@ -1,13 +1,16 @@
 package uk.tomhomewood.jmriroster.screenshots
 
 import android.view.View
+import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.hamcrest.Matcher
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,18 +28,27 @@ const val API_DELAY_MS: Long = 5 * 1000
 @RunWith(AndroidJUnit4::class)
 class TestActivityViewRoster {
 
-    @Rule @JvmField
-    var activityRule: ActivityScenarioRule<ActivityViewRoster> = ActivityScenarioRule(ActivityViewRoster::class.java)
+    private lateinit var activityScenario: ActivityScenario<ActivityViewRoster>
 
     @Rule @JvmField
     val localeTestRule = LocaleTestRule()
 
-    @Test
-    fun testTakeScreenshot() {
-        onView(isRoot()).perform(waitFor(API_DELAY_MS))
-        Screengrab.screenshot("1_roster_list")
-        Screengrab.screenshot("2_screenshot_two")
+    @Before
+    fun setup() {
+        activityScenario = ActivityScenario.launch(ActivityViewRoster.getLaunchIntent(ApplicationProvider.getApplicationContext()))
+    }
 
+    @Test
+    fun testTakeScreenshots() {
+        activityScenario.onActivity {
+            onView(isRoot()).perform(waitFor(API_DELAY_MS))
+            Screengrab.screenshot("roster_list")
+        }
+    }
+
+    @After
+    fun tearDown() {
+        activityScenario.close()
     }
 }
 

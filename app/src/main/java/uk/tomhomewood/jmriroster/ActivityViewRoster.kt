@@ -1,5 +1,7 @@
 package uk.tomhomewood.jmriroster
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,6 +30,12 @@ import uk.tomhomewood.jmriroster.lib.v1.loadRosterEntryImage
 const val TAG = "MainActivity"
 
 class ActivityViewRoster : AppCompatActivity() {
+
+    companion object {
+        fun getLaunchIntent(context: Context): Intent {
+            return Intent(context, ActivityViewRosterEntry::class.java)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
