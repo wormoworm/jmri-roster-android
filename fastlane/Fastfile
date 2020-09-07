@@ -28,7 +28,8 @@ platform :android do
   desc "Capture screenshots"
   lane :app_capture_screenshots do
     screengrab(
-      use_adb_root: true
+      use_adb_root: true,
+      use_tests_in_packages: "uk.tomhomewood.jmriroster.screenshots"
     )
   end
 

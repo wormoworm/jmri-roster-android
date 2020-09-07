@@ -1,6 +1,7 @@
-package uk.tomhomewood.jmriroster
+package uk.tomhomewood.jmriroster.screenshots
 
 import android.view.View
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
@@ -12,6 +13,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import tools.fastlane.screengrab.Screengrab
 import tools.fastlane.screengrab.locale.LocaleTestRule
+import uk.tomhomewood.jmriroster.ActivityViewRoster
 
 const val API_DELAY_MS: Long = 5 * 1000
 
@@ -31,7 +33,7 @@ class TestActivityViewRoster {
 
     @Test
     fun testTakeScreenshot() {
-//        onView(isRoot()).perform(waitFor(API_DELAY_MS))
+        onView(isRoot()).perform(waitFor(API_DELAY_MS))
         Screengrab.screenshot("1_roster_list")
         Screengrab.screenshot("2_screenshot_two")
 
