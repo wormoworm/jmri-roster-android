@@ -1,9 +1,6 @@
 package uk.tomhomewood.jmriroster.screenshots
 
-import android.view.View
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.UiController
-import androidx.test.espresso.ViewAction
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -11,15 +8,15 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.hamcrest.BaseMatcher
 import org.hamcrest.Description
-import org.hamcrest.Matcher
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import tools.fastlane.screengrab.Screengrab
-import tools.fastlane.screengrab.locale.LocaleTestRule
 import uk.tomhomewood.jmriroster.ActivityViewRoster
 import uk.tomhomewood.jmriroster.R
 import uk.tomhomewood.jmriroster.RosterListViewHolder
+import uk.tomhomewood.jmriroster.screenshots.base.BaseScreenshotTest
+import uk.tomhomewood.jmriroster.utils.waitFor
 
 const val API_RESPONSE_DELAY_MS: Long = 5 * 1000
 const val IMAGE_LOAD_DELAY_MS: Long = 5 * 1000
@@ -31,16 +28,13 @@ const val ROSTER_ID_66957: String = "66957"
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4::class)
-class TestActivityViewRoster {
+class TestActivityViewRoster : BaseScreenshotTest() {
 
     @Rule @JvmField
     val activityRule = ActivityScenarioRule(ActivityViewRoster::class.java)
 
-    @Rule @JvmField
-    val localeTestRule = LocaleTestRule()
-
     @Test
-    fun testTakeScreenshots() {
+    fun screenshotRosterList() {
         onView(isRoot())
             .perform(waitFor(API_RESPONSE_DELAY_MS))
         onView(withId(R.id.roster_list))
@@ -48,22 +42,6 @@ class TestActivityViewRoster {
         onView(isRoot())
             .perform(waitFor(IMAGE_LOAD_DELAY_MS))
         Screengrab.screenshot("roster_list")
-    }
-}
-
-fun waitFor(millis: Long): ViewAction{
-    return object: ViewAction{
-        override fun getDescription(): String {
-            return "Wait for "+millis+"ms"
-        }
-
-        override fun getConstraints(): Matcher<View> {
-            return isRoot()
-        }
-
-        override fun perform(uiController: UiController?, view: View?) {
-            uiController!!.loopMainThreadForAtLeast(millis)
-        }
     }
 }
 
