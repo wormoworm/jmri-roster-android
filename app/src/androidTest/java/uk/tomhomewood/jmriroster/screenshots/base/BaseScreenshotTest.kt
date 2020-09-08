@@ -20,7 +20,7 @@ open class BaseScreenshotTest {
 
     @After
     fun tearDown() {
-        exitDemoMode()
+//        exitDemoMode()
     }
 
     private fun enterDemoMode() {
