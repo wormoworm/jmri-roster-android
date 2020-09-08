@@ -41,7 +41,7 @@ class TestActivityViewRoster : BaseScreenshotTest() {
             .perform(RecyclerViewActions.scrollToHolder(RosterListViewHolderMatcher(ROSTER_ID_66957)))
         onView(isRoot())
             .perform(waitFor(IMAGE_LOAD_DELAY_MS))
-        Screengrab.screenshot("roster_list")
+        Screengrab.screenshot("1_roster_list")
     }
 }
 

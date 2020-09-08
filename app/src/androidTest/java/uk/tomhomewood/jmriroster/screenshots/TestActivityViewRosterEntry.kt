@@ -29,6 +29,6 @@ class TestActivityViewRosterEntry : BaseScreenshotTest() {
     fun screenshotRosterEntry() {
         onView(ViewMatchers.isRoot())
                 .perform(waitFor(API_RESPONSE_DELAY_MS))
-        Screengrab.screenshot("roster_entry")
+        Screengrab.screenshot("2_roster_entry")
     }
 }
