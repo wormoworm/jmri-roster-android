@@ -55,6 +55,7 @@ jobs:
         with:
           api-level: 29
           target: google_apis
+          profile: Nexus 6
           script: bundle exec fastlane android app_capture_screenshots
 
       - name: Build and publish app
