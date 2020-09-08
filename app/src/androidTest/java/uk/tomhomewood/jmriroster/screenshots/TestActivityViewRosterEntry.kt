@@ -29,7 +29,7 @@ class TestActivityViewRosterEntry {
     @Test
     fun testTakeScreenshots() {
         onView(ViewMatchers.isRoot())
-                .perform(waitFor(API_DELAY_MS))
+                .perform(waitFor(API_RESPONSE_DELAY_MS))
         Screengrab.screenshot("roster_entry")
     }
 }

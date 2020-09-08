@@ -21,7 +21,8 @@ import uk.tomhomewood.jmriroster.ActivityViewRoster
 import uk.tomhomewood.jmriroster.R
 import uk.tomhomewood.jmriroster.RosterListViewHolder
 
-const val API_DELAY_MS: Long = 5 * 1000
+const val API_RESPONSE_DELAY_MS: Long = 5 * 1000
+const val IMAGE_LOAD_DELAY_MS: Long = 5 * 1000
 const val ROSTER_ID_66957: String = "66957"
 
 /**
@@ -41,9 +42,11 @@ class TestActivityViewRoster {
     @Test
     fun testTakeScreenshots() {
         onView(isRoot())
-            .perform(waitFor(API_DELAY_MS))
+            .perform(waitFor(API_RESPONSE_DELAY_MS))
         onView(withId(R.id.roster_list))
             .perform(RecyclerViewActions.scrollToHolder(RosterListViewHolderMatcher(ROSTER_ID_66957)))
+        onView(isRoot())
+            .perform(waitFor(IMAGE_LOAD_DELAY_MS))
         Screengrab.screenshot("roster_list")
     }
 }
