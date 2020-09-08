@@ -1,7 +1,8 @@
 package uk.tomhomewood.jmriroster.screenshots.base
 
-import android.util.Log
-import org.junit.*
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
 import tools.fastlane.screengrab.cleanstatusbar.CleanStatusBar
 import tools.fastlane.screengrab.cleanstatusbar.MobileDataType
 import tools.fastlane.screengrab.locale.LocaleTestRule
