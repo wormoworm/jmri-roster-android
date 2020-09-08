@@ -21,7 +21,7 @@ import uk.tomhomewood.jmriroster.ActivityViewRoster
 import uk.tomhomewood.jmriroster.R
 import uk.tomhomewood.jmriroster.RosterListViewHolder
 
-const val API_DELAY_MS: Long = 10 * 1000
+const val API_DELAY_MS: Long = 5 * 1000
 const val ROSTER_ID_66957: String = "66957"
 
 /**
