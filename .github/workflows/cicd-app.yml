@@ -26,7 +26,7 @@ jobs:
   publish_app:
     name: Publish app
     runs-on: macos-latest
-    # needs: test_app
+    needs: test_app
     if: "!contains(github.event.head_commit.message, '#skip-app-publish')"
     steps:
       - uses: actions/checkout@v1
