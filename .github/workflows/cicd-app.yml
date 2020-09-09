@@ -39,8 +39,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Install Fastlane
-        run: gem install fastlane -NV
+      - name: Update Bundle
+        run: bundle update
       - name: Deploy keystore
         run: echo '${{ secrets.RELEASE_KEYSTORE }}' | base64 -d > $ORG_GRADLE_PROJECT_keystorepath
         env:
