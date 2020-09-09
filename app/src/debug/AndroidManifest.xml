@@ -3,9 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="uk.tomhomewood.jmriroster">
 
-    <!-- Indicates the use of the clean status bar feature -->
-    <uses-feature android:name="tools.fastlane.screengrab.cleanstatusbar" />
-
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- Allows unlocking your device and activating its screen so UI tests can succeed -->
@@ -19,11 +16,6 @@
     <!-- Allows changing locales -->
     <uses-permission
         android:name="android.permission.CHANGE_CONFIGURATION"
-        tools:ignore="ProtectedPermissions" />
-
-    <!-- Allows for changing the status bar -->
-    <uses-permission
-        android:name="android.permission.DUMP"
         tools:ignore="ProtectedPermissions" />
 
 </manifest>

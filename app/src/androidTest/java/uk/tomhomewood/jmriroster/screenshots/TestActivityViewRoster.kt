@@ -12,10 +12,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import tools.fastlane.screengrab.Screengrab
+import tools.fastlane.screengrab.locale.LocaleTestRule
 import uk.tomhomewood.jmriroster.ActivityViewRoster
 import uk.tomhomewood.jmriroster.R
 import uk.tomhomewood.jmriroster.RosterListViewHolder
-import uk.tomhomewood.jmriroster.screenshots.base.BaseScreenshotTest
 import uk.tomhomewood.jmriroster.utils.waitFor
 
 const val API_RESPONSE_DELAY_MS: Long = 5 * 1000
@@ -28,7 +28,11 @@ const val ROSTER_ID_66957: String = "66957"
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4::class)
-class TestActivityViewRoster : BaseScreenshotTest() {
+class TestActivityViewRoster {
+
+    @Rule
+    @JvmField
+    val localeTestRule = LocaleTestRule()
 
     @Rule @JvmField
     val activityRule = ActivityScenarioRule(ActivityViewRoster::class.java)

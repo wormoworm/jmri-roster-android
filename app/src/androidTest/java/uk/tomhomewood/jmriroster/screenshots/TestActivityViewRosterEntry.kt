@@ -11,7 +11,6 @@ import org.junit.runner.RunWith
 import tools.fastlane.screengrab.Screengrab
 import tools.fastlane.screengrab.locale.LocaleTestRule
 import uk.tomhomewood.jmriroster.ActivityViewRosterEntry
-import uk.tomhomewood.jmriroster.screenshots.base.BaseScreenshotTest
 import uk.tomhomewood.jmriroster.utils.waitFor
 
 /**
@@ -20,7 +19,11 @@ import uk.tomhomewood.jmriroster.utils.waitFor
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4::class)
-class TestActivityViewRosterEntry : BaseScreenshotTest() {
+class TestActivityViewRosterEntry {
+
+    @Rule
+    @JvmField
+    val localeTestRule = LocaleTestRule()
 
     @Rule @JvmField
     val activityRule = ActivityScenarioRule<ActivityViewRosterEntry>(ActivityViewRosterEntry.getLaunchIntent(ApplicationProvider.getApplicationContext(), ROSTER_ID_66957))
