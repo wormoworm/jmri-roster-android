@@ -58,7 +58,7 @@ jobs:
           api-level: 29
           target: google_apis
           profile: Nexus 6
-          script: ./app/src/androidTest0/enable_demo_mode.sh && bundle exec fastlane android app_capture_screenshots
+          script: ./app/src/androidTest/enable_demo_mode.sh && bundle exec fastlane android app_capture_screenshots
 
       - name: Build and publish app
         run: bundle exec fastlane android app_publish
