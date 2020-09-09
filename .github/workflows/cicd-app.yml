@@ -22,11 +22,6 @@ jobs:
         uses: maierj/fastlane-action@v1.4.0
         with:
           lane: 'android app_test'
-      # - name: run tests
-      #   uses: reactivecircus/android-emulator-runner@v2
-      #   with:
-      #     api-level: 29
-      #     script: ./gradlew connectedCheck
 
   publish_app:
     name: Publish app
@@ -45,9 +40,6 @@ jobs:
         run: echo '${{ secrets.RELEASE_KEYSTORE }}' | base64 -d > $ORG_GRADLE_PROJECT_keystorepath
         env:
           ORG_GRADLE_PROJECT_keystorepath: ${{ github.workspace }}/release.jks
-      # - name: Deploy service_account.json
-      #   run: echo '${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}' > ${{ github.workspace }}/service_account.json
-          ###
       
       - name: Build apks for UI tests
         run: bundle exec fastlane android app_build_for_ui_test
@@ -69,33 +61,3 @@ jobs:
           KEYSTORE_PASSWORD_JMRI_ROSTER: ${{ secrets.RELEASE_KEYSTORE_ALIAS_JMRI_ROSTER_PASSWORD }}
           AAB_PATH: ${{ github.workspace }}/app/build/outputs/bundle/release/app-release.aab
           SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
-
-          
-      # - name: Build and publish app
-      #   uses: maierj/fastlane-action@v1.4.0
-      #   with:
-      #     lane: 'android app_publish'
-      #   env:
-      #     BUILD_NUMBER: ${{ github.run_number }}
-      #     KEYSTORE_PATH: ${{ github.workspace }}/release.jks
-      #     KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
-      #     KEYSTORE_PASSWORD_JMRI_ROSTER: ${{ secrets.RELEASE_KEYSTORE_ALIAS_JMRI_ROSTER_PASSWORD }}
-      #     AAB_PATH: ${{ github.workspace }}/app/build/outputs/bundle/release/app-release.aab
-      #     SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
-
-#       - name: Assemble app bundle
-#         run: bash ./gradlew app:bundleRelease -P versionPatch=${{ github.run_number }}
-#         env:
-#           ORG_GRADLE_PROJECT_keystorepath: ${{ github.workspace }}/release.jks
-#           ORG_GRADLE_PROJECT_keystorepassword: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
-#           ORG_GRADLE_PROJECT_keypasswordjmriroster: ${{ secrets.RELEASE_KEYSTORE_ALIAS_JMRI_ROSTER_PASSWORD }}
-      
-#       - name: Publish app to Google Play alpha channel
-#         uses: r0adkll/upload-google-play@v1.0.4
-#         with:
-#           serviceAccountJson: ${{ github.workspace }}/service_account.json
-#           packageName: uk.tomhomewood.jmriroster
-#           releaseFile: ${{ github.workspace }}/app/build/outputs/bundle/release/app-release.aab
-#           track: alpha
-#           whatsNewDirectory: ${{ github.workspace }}/app/app-release-notes
-# #          mappingFile: ${{ github.workspace }}/app/build/outputs/mapping/release/mapping.txt
