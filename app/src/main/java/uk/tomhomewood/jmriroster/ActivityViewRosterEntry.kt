@@ -17,7 +17,7 @@ import androidx.lifecycle.*
 import androidx.palette.graphics.Palette
 import kotlinx.android.synthetic.main.activity_view_roster_entry.*
 import kotlinx.coroutines.launch
-import uk.tomhomewood.jmriroster.lib.v1.*
+import uk.tomhomewood.jmriroster.lib.v2.*
 import coil.transform.Transformation
 import coil.transition.CrossfadeTransition
 import coil.transition.Transition

@@ -14,12 +14,11 @@ import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.annotation.ExperimentalCoilApi
-import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration
 import kotlinx.coroutines.launch
-import uk.tomhomewood.jmriroster.lib.v1.Result
-import uk.tomhomewood.jmriroster.lib.v1.RosterApi
-import uk.tomhomewood.jmriroster.lib.v1.RosterEntry
-import uk.tomhomewood.jmriroster.lib.v1.loadRosterEntryImage
+import uk.tomhomewood.jmriroster.lib.v2.Result
+import uk.tomhomewood.jmriroster.lib.v2.RosterApi
+import uk.tomhomewood.jmriroster.lib.v2.RosterEntry
+import uk.tomhomewood.jmriroster.lib.v2.loadRosterEntryImage
 
 const val TAG = "MainActivity"
 
@@ -39,7 +38,7 @@ class ActivityViewRoster : AppCompatActivity() {
 
         val rosterList = findViewById<RecyclerView>(R.id.roster_list)
         rosterList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        rosterList.addItemDecoration(LayoutMarginDecoration(1, resources.getDimensionPixelSize(R.dimen.margin_vertical_medium)))
+//        rosterList.addItemDecoration(LayoutMarginDecoration(1, resources.getDimensionPixelSize(R.dimen.margin_vertical_medium)))
 
         val model: RosterViewModel by viewModels()
         rosterList.adapter = RosterAdapter(this, model) {

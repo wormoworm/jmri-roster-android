@@ -1,13 +1,27 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = "1.3.72"
+    ext.kotlinVersion = "1.7.10"
+    ext.retrofitVersion = "2.9.0"
+    ext.appCompatVersion = "1.5.1"
+    ext.junitVersion = "4.13.2"
+    ext.androidxJunitVersion = "1.1.3"
+    ext.materialVersion = "1.5.0"
+    ext.constraintLayoutVersion = "2.1.3"
+    ext.lifecycleVersion = "2.5.1"
+    ext.espressoVersion = "3.3.0"       // LEAVE IT!!! We are intentionally using a slightly older version (3.3.0), because the current version (3.4.0) fails with all sorts of linker / can't find method nonsense.
+    ext.sdkConfiguration = [
+            min: 26,
+            target: 33,
+            compile: 33
+    ]
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        mavenLocal()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.0.1"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -17,7 +31,8 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        mavenLocal()
         maven {
             name("Github")
             url("https://maven.pkg.github.com/wormoworm")

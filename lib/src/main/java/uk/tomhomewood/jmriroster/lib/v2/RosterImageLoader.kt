@@ -1,4 +1,4 @@
-package uk.tomhomewood.jmriroster.lib.v1
+package uk.tomhomewood.jmriroster.lib.v2
 
 import android.content.Context
 import android.graphics.Bitmap

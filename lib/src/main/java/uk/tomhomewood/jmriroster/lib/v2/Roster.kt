@@ -1,11 +1,11 @@
-package uk.tomhomewood.jmriroster.lib.v1
+package uk.tomhomewood.jmriroster.lib.v2
 
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface Roster{
-    @GET("v1/roster")
+    @GET("v2/roster")
     suspend fun getRoster(): RosterResponse
-    @GET("v1/locomotive/{id}")
+    @GET("v2/locomotive/{id}")
     suspend fun getRosterEntry(@Path("id") id: String): RosterEntryResponse
 }
