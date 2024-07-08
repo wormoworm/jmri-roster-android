@@ -1,4 +1,4 @@
-package uk.tomhomewood.jmriroster.lib.v1
+package uk.tomhomewood.jmriroster.lib.v2
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
