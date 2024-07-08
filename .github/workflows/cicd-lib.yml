@@ -11,32 +11,42 @@ on:
 jobs:
   test_lib:
     name: Test lib module
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
       - name: Run unit tests
-        uses: maierj/fastlane-action@v1.4.0
+        uses: maierj/fastlane-action@v3.1.0        
         with:
           lane: 'android lib_test'
 
   publish_lib:
     name: Publish lib artifact
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: test_lib
     if: "!contains(github.event.head_commit.message, '#skip-lib-publish')"
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Publish artifact
-        uses: maierj/fastlane-action@v1.4.0
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
         with:
+          ruby-version: '3.0'
+          bundler-cache: true
+      - name: Publish artifact
+        uses: maierj/fastlane-action@v3.1.0
+          with:
           lane: 'android lib_publish'
         env:
           BUILD_NUMBER: ${{ github.run_number }}
